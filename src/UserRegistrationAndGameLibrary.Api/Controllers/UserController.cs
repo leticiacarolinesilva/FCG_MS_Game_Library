@@ -1,39 +1,67 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UserRegistrationAndGameLibrary.Application.Dtos;
+using UserRegistrationAndGameLibrary.Application.Interfaces;
+using UserRegistrationAndGameLibrary.Domain.Entities;
+using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.teste.Services.Interfaces;
+
 
 namespace UserRegistrationAndGameLibrary.teste.Controllers;
 
 /// <summary>
-/// Handles HTTP requests related to user operations.
+/// API for user management
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private ICorrelationIdGeneratorService _correlationIdGenerator;
     public ILogger Logger;
+    private readonly IUserService _uservice;
 
     public UserController(
         ICorrelationIdGeneratorService idGeneratorService,
-        ILogger logger)
+        ILogger logger,
+        IUserService uservice)
     {
         _correlationIdGenerator = idGeneratorService ?? throw new InvalidOperationException(nameof(idGeneratorService));
         Logger = logger ?? throw new InvalidOperationException(nameof(logger));
+        _uservice = uservice;
     }
-  
+
     /// <summary>
-    /// User registration.
+    /// Register a new user
     /// </summary>
-    /// <returns> </returns>
-    [HttpPost]
-    public IActionResult UserRegistration([FromBody] string request)
+    /// <param name="request">ser registration data</param>
+    /// <returns>The newly created user</returns>
+    [HttpPost("register")]
+    [ProducesResponseType(typeof(User), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Register([FromBody] RegisterUserDto request)
     {
-        Logger.LogInformation($"Start process user registration.");
-
-        string result = string.Empty;
-
-        Logger.LogInformation($"Fished process user registration.");
-
-        return Ok(new { msg = result });
+        try
+        {
+            var user = await _uservice.RegisterUserAsync(request);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        }
+        catch (DomainException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUser([FromQuery] string email)
+    {
+        var user = await _uservice.GetUserByEmailAsync(email);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        return Ok(user);
+    }
+        
+    
 }

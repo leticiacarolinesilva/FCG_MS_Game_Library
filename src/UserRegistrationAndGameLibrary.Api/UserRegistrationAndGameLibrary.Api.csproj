@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UserRegistrationAndGameLibrary.Domain\UserRegistrationAndGameLibrary.Domain.csproj" />
+    <ProjectReference Include="..\UserRegistrationAndGameLibrary.Application\UserRegistrationAndGameLibrary.Application.csproj" />
   </ItemGroup>
 
 </Project>
