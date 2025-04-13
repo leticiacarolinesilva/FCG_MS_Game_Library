@@ -41,9 +41,9 @@ dotnet_separate_import_directive_groups = true
 dotnet_diagnostic.IDE0005.severity = error		# Usings não utilizados
 dotnet_diagnostic.CS0168.severity  = error		# Variável declarada e não usada
 dotnet_diagnostic.CS0219.severity  = error		# Variável atribuída e nunca usada
-dotnet_diagnostic.IDE0051.severity = warning    # Método privado não usado
-dotnet_diagnostic.IDE0060.severity = warning    # Parâmetro não utilizado
-dotnet_diagnostic.IDE1006.severity = warning    # Nomes com casing errado (ex: minúsculas em PascalCase)
+dotnet_diagnostic.IDE0051.severity = error		# Método privado não usado
+dotnet_diagnostic.IDE0060.severity = error		# Parâmetro não utilizado
+dotnet_diagnostic.IDE1006.severity = error		# Nomes com casing errado (ex: minúsculas em PascalCase)
 
 # Estilo de namespace: scoped (file-scoped)
 csharp_style_namespace_declarations = file_scoped:suggestion

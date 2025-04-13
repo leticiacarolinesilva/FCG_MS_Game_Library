@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.teste.Services.Interfaces;
-
 
 namespace UserRegistrationAndGameLibrary.teste.Controllers;
 
@@ -26,7 +25,7 @@ public class UserController : ControllerBase
     {
         _correlationIdGenerator = idGeneratorService ?? throw new InvalidOperationException(nameof(idGeneratorService));
         Logger = logger ?? throw new InvalidOperationException(nameof(logger));
-        _uservice = uservice;
+        _uservice = uservice ?? throw new InvalidOperationException(nameof(uservice));
     }
 
     /// <summary>
@@ -41,11 +40,18 @@ public class UserController : ControllerBase
     {
         try
         {
+            Logger.LogInformation($"Start process user registration.");
+
             var user = await _uservice.RegisterUserAsync(request);
+
+            Logger.LogInformation($"Fished process user registration.");
+
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
         catch (DomainException ex)
         {
+            Logger.LogError($"An error occurred in the user registration process. Details Message: {ex.Message}");
+
             return BadRequest(ex.Message);
         }
     }
@@ -62,6 +68,4 @@ public class UserController : ControllerBase
         }
         return Ok(user);
     }
-        
-    
 }
