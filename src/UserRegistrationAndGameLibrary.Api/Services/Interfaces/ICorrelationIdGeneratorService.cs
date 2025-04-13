@@ -1,4 +1,4 @@
-﻿namespace UserRegistrationAndGameLibrary.teste.Services.Interfaces;
+﻿namespace UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 
 public interface ICorrelationIdGeneratorService
 {

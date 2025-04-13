@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Primitives;
-using UserRegistrationAndGameLibrary.teste.Services.Interfaces;
+using Microsoft.Extensions.Primitives;
+using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 
-namespace UserRegistrationAndGameLibrary.teste.Middlewares;
+namespace UserRegistrationAndGameLibrary.Api.Middlewares;
 
 public class CorrelationMiddleware
 {
@@ -34,7 +34,7 @@ public class CorrelationMiddleware
     }
 
     private static void AddCorrelationIdHeaderToResponse(HttpContext context, StringValues correlationId)
-   => context.Response.OnStarting(() =>
+        => context.Response.OnStarting(() =>
    {
        context.Response.Headers[_correlationIdHeader] = new[] { correlationId.ToString() };
        return Task.CompletedTask;

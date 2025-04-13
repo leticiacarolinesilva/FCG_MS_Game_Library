@@ -1,8 +1,8 @@
-﻿using UserRegistrationAndGameLibrary.teste.Controllers;
-using UserRegistrationAndGameLibrary.teste.Services;
-using UserRegistrationAndGameLibrary.teste.Services.Interfaces;
+﻿using UserRegistrationAndGameLibrary.Api.Controllers;
+using UserRegistrationAndGameLibrary.Api.Services;
+using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 
-namespace UserRegistrationAndGameLibrary.teste.Extensions
+namespace UserRegistrationAndGameLibrary.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {

@@ -1,6 +1,6 @@
-﻿using UserRegistrationAndGameLibrary.teste.Services.Interfaces;
+﻿using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 
-namespace UserRegistrationAndGameLibrary.teste.Services;
+namespace UserRegistrationAndGameLibrary.Api.Services;
 
 public class CorrelationIdGeneratorService : ICorrelationIdGeneratorService
 {

@@ -1,6 +1,6 @@
-﻿using UserRegistrationAndGameLibrary.teste.Middlewares;
+using UserRegistrationAndGameLibrary.Api.Middlewares;
 
-namespace UserRegistrationAndGameLibrary.teste.Extensions;
+namespace UserRegistrationAndGameLibrary.Api.Extensions;
 
 public static class MiddlewareExtensions
 {

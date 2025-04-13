@@ -1,4 +1,4 @@
-using UserRegistrationAndGameLibrary.teste.Extensions;
+using UserRegistrationAndGameLibrary.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

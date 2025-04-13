@@ -3,9 +3,9 @@ using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
-using UserRegistrationAndGameLibrary.teste.Services.Interfaces;
+using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 
-namespace UserRegistrationAndGameLibrary.teste.Controllers;
+namespace UserRegistrationAndGameLibrary.Api.Controllers;
 
 /// <summary>
 /// API for user management
