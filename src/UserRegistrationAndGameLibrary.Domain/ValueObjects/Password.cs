@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using UserRegistrationAndGameLibrary.Domain.Exceptions;
 
 namespace UserRegistrationAndGameLibrary.Domain.ValueObjects;
 /// <summary>
@@ -12,12 +13,12 @@ public sealed class Password
    {
       if (string.IsNullOrWhiteSpace(value))
       {
-         throw new ArgumentException("Password cannot be empty", nameof(value));
+         throw new DomainException("Password cannot be empty");
       }
 
       if (!IsSecuredPassword(value))
       {
-         throw new ArgumentException("Password must be at least 8 characters long and contain numbers, letters and special characters");
+         throw new DomainException("Password must be at least 8 characters long and contain numbers, letters and special characters");
       }
       
       HasedValue = value;

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistrationAndGameLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistrationAndGameLibrary.Application", "src\UserRegistrationAndGameLibrary.Application\UserRegistrationAndGameLibrary.Application.csproj", "{FF54AF0B-C3B2-4244-9F22-BA4B97A08C40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistrationAndGameLibrary.UnitTest", "src\UserRegistrationAndGameLibrary.UnitTest\UserRegistrationAndGameLibrary.UnitTest.csproj", "{481B6076-61A4-46BF-8222-9BD798A2A7FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FF54AF0B-C3B2-4244-9F22-BA4B97A08C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF54AF0B-C3B2-4244-9F22-BA4B97A08C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF54AF0B-C3B2-4244-9F22-BA4B97A08C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{481B6076-61A4-46BF-8222-9BD798A2A7FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{481B6076-61A4-46BF-8222-9BD798A2A7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{481B6076-61A4-46BF-8222-9BD798A2A7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{481B6076-61A4-46BF-8222-9BD798A2A7FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
