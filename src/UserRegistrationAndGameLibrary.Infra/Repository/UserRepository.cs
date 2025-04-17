@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
-using UserRegistrationAndGameLibrary.Infra.Data;
+using UserRegistrationAndGameLibrary.Infra;
 
 namespace UserRegistrationAndGameLibrary.Infra.Repository;
 

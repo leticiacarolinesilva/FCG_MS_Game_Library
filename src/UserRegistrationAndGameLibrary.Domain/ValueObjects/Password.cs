@@ -9,6 +9,10 @@ public sealed class Password
 {
    public string HasedValue { get; }
 
+   /// <summary>
+   /// Used for EF Core
+   /// </summary>
+   private Password(){}
    public Password(string value)
    {
       if (string.IsNullOrWhiteSpace(value))

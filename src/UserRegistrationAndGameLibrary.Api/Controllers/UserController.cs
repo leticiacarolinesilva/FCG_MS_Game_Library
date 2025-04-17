@@ -4,7 +4,7 @@ using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 
-namespace UserRegistrationAndGameLibrary.teste.Controllers;
+namespace UserRegistrationAndGameLibrary.Api.Controllers;
 
 /// <summary>
 /// API for user management

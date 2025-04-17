@@ -36,14 +36,33 @@ public class GameLibraryService
         return await _gameLibraryRepository.GetByUserIdAsync(userId);
     }
 
-    public async Task MarkAsInstalledAsync(Guid libraryEntryId, Guid userId)
+    public async Task<GameLibrary?> GetLibraryEntryAsync(Guid entryId, Guid userId)
     {
-        var entry = await _gameLibraryRepository.GetByIdAsync(libraryEntryId);
-            
-        if (entry == null || entry.UserId != userId)
-            throw new DomainException("Library entry not found");
+        var entry = await _gameLibraryRepository.GetByIdAsync(entryId);
+        return entry?.UserId == userId ? entry : null;
+    }
 
-        await _gameLibraryRepository.UpdateInstallationStatusAsync(libraryEntryId, true);
+    public async Task MarkAsInstalledAsync(Guid entryId, Guid userId)
+    {
+        var entry = await GetLibraryEntryAsync(entryId, userId);
+        if (entry == null) throw new DomainException("Library entry not found");
+        entry.MarkAsInstalled();
+        await _gameLibraryRepository.UpdateAsync(entry);
+    }
+ 
+    public async Task MarkAsUninstalledAsync(Guid entryId, Guid userId)
+    {
+        var entry = await GetLibraryEntryAsync(entryId, userId);
+        if (entry == null) throw new DomainException("Library entry not found");
+        entry.MarkAsUninstalled();
+        await _gameLibraryRepository.UpdateAsync(entry);
+    }
+
+    public async Task RemoveFromLibraryAsync(Guid entryId, Guid userId)
+    {
+        var entry = await GetLibraryEntryAsync(entryId, userId);
+        if (entry == null) throw new DomainException("Library entry not found");
+        await _gameLibraryRepository.RemoveFromLibraryAsync(entryId);
     }
     
 }

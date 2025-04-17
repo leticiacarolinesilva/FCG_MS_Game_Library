@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using UserRegistrationAndGameLibrary.Application.Interfaces;
+using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
-using UserRegistrationAndGameLibrary.Infra.Data;
+using UserRegistrationAndGameLibrary.Infra;
 using UserRegistrationAndGameLibrary.Infra.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +15,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add PostgreSQL
-var connectionString = builder.Configuration.GetConnectionString("UserRegistrationConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<UserRegistrationDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<IGameService, GameService>();
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();

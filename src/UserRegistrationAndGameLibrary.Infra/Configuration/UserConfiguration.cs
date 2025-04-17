@@ -37,6 +37,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.CreateAt)
             .HasColumnName("created_at")
+            .HasDefaultValueSql("NOW()") 
             .IsRequired();
 
         builder.HasMany(u => u.GameLibrary)

@@ -1,0 +1,10 @@
+In the same solution folder
+
+dotnet ef migrations add InitialCreate \
+    --project src/UserRegistrationAndGameLibrary.Infra \
+    --startup-project src/UserRegistrationAndGameLibrary.Api \
+    --output-dir Persistence/Migrations
+
+dotnet ef database update \
+    --project src/UserRegistrationAndGameLibrary.Infra \
+    --startup-project src/UserRegistrationAndGameLibrary.Api
