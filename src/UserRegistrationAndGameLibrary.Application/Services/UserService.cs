@@ -30,7 +30,7 @@ public class UserService : IUserService
         var emailVo = new Email(userDto.Email);
         var passwordVo = new Password(userDto.Password);
         
-        var user = new User(userDto.Email,emailVo, passwordVo);
+        var user = new User(userDto.Name,emailVo, passwordVo);
         await _userRepository.AddAsync(user);
         
         return user;
@@ -45,27 +45,21 @@ public class UserService : IUserService
 
     public async Task<GameLibrary> AddGameToLibraryAsync(Guid userId, Guid gameId)
     {
-        var user = await _userRepository.GetByIdAsync(userId);
-        if (user == null)
-        {
-            throw new DomainException("User not found");
-        }
-        
-        var game = await _gameRepository.GetByIdAsync(gameId);
-        if (game == null)
-        {
-            throw new DomainException("Game not found");
-        }
-        
-        var existingLibraryEntries = await _gameLibraryRepository.GetByUserIdAsync(userId);
-        if (existingLibraryEntries.Any(gl => gl.GameId == gameId))
+        var user = await _userRepository.GetByIdAsync(userId) 
+                   ?? throw new DomainException("User not found");
+    
+        var game = await _gameRepository.GetByIdAsync(gameId) 
+                   ?? throw new DomainException("Game not found");
+
+  
+        var existingEntries = await _gameLibraryRepository.GetByUserIdAsync(userId);
+        if (existingEntries.Any(gl => gl.GameId == gameId))
         {
             throw new DomainException("User already owns this game");
         }
 
         var gameLibrary = new GameLibrary(user, game, game.Price);
         await _gameLibraryRepository.AddAsync(gameLibrary);
-        
         return gameLibrary;
     }
 }

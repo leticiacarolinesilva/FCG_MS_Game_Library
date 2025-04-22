@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using UserRegistrationAndGameLibrary.Domain.Exceptions;
 
 namespace UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
@@ -14,12 +15,12 @@ public class Email
         Value = value;
         if (string.IsNullOrEmpty(value))
         {
-            throw new ArgumentException("Email cannot beempty.", nameof(value));
+            throw new DomainException("Email cannot beempty.");
         }
 
         if (!IsValidEmail(value))
         {
-            throw new ArgumentException("Invalid email format", nameof(value));
+            throw new DomainException("Invalid email format");
         }
         
         Value = value.Trim().ToLower();
