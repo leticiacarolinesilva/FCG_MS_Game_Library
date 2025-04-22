@@ -53,6 +53,7 @@ public class GameLibrary
     
     public void MarkAsInstalled() => IsInstalled = true;
     public void MarkAsUninstalled() => IsInstalled = false;
+    public void SetInstalledStatus(bool isInstalled) => IsInstalled = isInstalled;
     
     
 }

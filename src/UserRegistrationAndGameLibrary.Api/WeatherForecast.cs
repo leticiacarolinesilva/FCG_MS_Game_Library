@@ -1,4 +1,4 @@
-namespace UserRegistrationAndGameLibrary.teste
+namespace UserRegistrationAndGameLibrary.Api
 {
     public class WeatherForecast
     {

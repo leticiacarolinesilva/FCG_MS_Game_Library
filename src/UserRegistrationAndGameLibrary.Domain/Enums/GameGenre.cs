@@ -10,6 +10,7 @@ public enum GameGenre
     Puzzle,
     Simulation,
     Horror,
+    MMO,
     FPS,
 
 }

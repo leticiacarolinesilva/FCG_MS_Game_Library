@@ -1,0 +1,77 @@
+root = true
+
+[*.cs]
+
+# Usar espaços, indentação de 4
+indent_style = space
+indent_size = 4
+
+# Fim de linha
+end_of_line = crlf
+insert_final_newline = true
+
+# Charset
+charset = utf-8
+
+# Ordenar usings (System primeiro, separados)
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
+
+# Regras de código
+dotnet_diagnostic.IDE0005.severity = root = true
+
+[*.cs]
+
+# Usar espaços, indentação de 4
+indent_style = space
+indent_size = 4
+
+# Fim de linha
+end_of_line = crlf
+insert_final_newline = true
+
+# Charset
+charset = utf-8
+
+# Ordenar usings (System primeiro, separados)
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
+
+# Regras de código
+dotnet_diagnostic.IDE0005.severity = error		# Usings não utilizados
+dotnet_diagnostic.CS0168.severity  = error		# Variável declarada e não usada
+dotnet_diagnostic.CS0219.severity  = error		# Variável atribuída e nunca usada
+dotnet_diagnostic.IDE0051.severity = error		# Método privado não usado
+dotnet_diagnostic.IDE0060.severity = error		# Parâmetro não utilizado
+dotnet_diagnostic.IDE1006.severity = error		# Nomes com casing errado (ex: minúsculas em PascalCase)
+
+# Estilo de namespace: scoped (file-scoped)
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# Preferência por var ou tipo explícito
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Nome da classe igual ao arquivo
+dotnet_diagnostic.SA1649.severity = warning
+
+# Preferir expressão lambda quando possível
+dotnet_style_prefer_lambda_body = true:suggestion    # Usings não utilizados
+dotnet_diagnostic.CS0168.severity = warning     # Variável declarada e não usada
+dotnet_diagnostic.CS0219.severity = error     # Variável atribuída e nunca usada
+dotnet_diagnostic.IDE0051.severity = warning    # Método privado não usado
+dotnet_diagnostic.IDE0060.severity = warning    # Parâmetro não utilizado
+dotnet_diagnostic.IDE1006.severity = warning    # Nomes com casing errado (ex: minúsculas em PascalCase)
+
+# Estilo de namespace: scoped (file-scoped)
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# Preferência por var ou tipo explícito
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Nome da classe igual ao arquivo
+dotnet_diagnostic.SA1649.severity = warning
+
+# Preferir expressão lambda quando possível
+dotnet_style_prefer_lambda_body = true:suggestion
