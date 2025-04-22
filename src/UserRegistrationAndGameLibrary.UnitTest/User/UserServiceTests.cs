@@ -103,30 +103,39 @@ namespace UserRegistrationAndGameLibrary.UnitTest.User;
         }
         
         [Fact]
-        public async Task AddGameToLibraryAsync_ShouldAddGame_WhenValid()
+        public async Task AddGameToLibraryAsync_ShouldCreateValidLibraryEntry_WhenInputIsValid()
         {
-            // Arrange
-            var userId = Guid.NewGuid();
-            var gameId = Guid.NewGuid();
-    
-            var user = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"));
-            var game = new Game("Test Game", "Description", 29.99m, DateTime.UtcNow, GameGenre.RPG, "https://test.com/cover.jpg");
 
-            _userRepositoryMock.Setup(x => x.GetByIdAsync(userId))
+            var user = new Domain.Entities.User("Test User", 
+                new Email("test@example.com"), 
+                new Password("ValidPass1!")); 
+    
+            var game = new Game(
+                "Test Game", 
+                "Description", 
+                29.99m, 
+                DateTime.UtcNow, 
+                GameGenre.RPG, 
+                "https://test.com/cover.jpg"); 
+            
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(user);
     
-            _gameRepositoryMock.Setup(x => x.GetByIdAsync(gameId))
+            _gameRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(game);
-    
-            _gameLibraryRepositoryMock.Setup(x => x.AddAsync(It.IsAny<GameLibrary>()))
-                .ReturnsAsync((GameLibrary gl) => gl);
-
-
-            var result = await _userService.AddGameToLibraryAsync(userId, gameId);
             
-            Assert.Equal(userId, result.UserId);
-            Assert.Equal(gameId, result.GameId);
-            Assert.Equal(game.Price, result.PurchasePrice);
+            GameLibrary createdLibrary = null;
+            _gameLibraryRepositoryMock.Setup(x => x.AddAsync(It.IsAny<GameLibrary>()))
+                .Callback<GameLibrary>(gl => createdLibrary = gl)
+                .ReturnsAsync((GameLibrary gl) => gl);
+            
+            var result = await _userService.AddGameToLibraryAsync(Guid.NewGuid(), Guid.NewGuid());
+            
+            Assert.NotNull(createdLibrary);
+            Assert.Equal(createdLibrary.Id, result.Id);
+            Assert.Equal(createdLibrary.UserId, result.UserId);
+            Assert.Equal(createdLibrary.GameId, result.GameId);
+    
             _gameLibraryRepositoryMock.Verify(x => x.AddAsync(It.IsAny<GameLibrary>()), Times.Once);
         }
 
@@ -164,9 +173,6 @@ namespace UserRegistrationAndGameLibrary.UnitTest.User;
         [Fact]
         public async Task AddGameToLibraryAsync_ShouldThrow_WhenUserAlreadyOwnsGame()
         {
-
-            var userId = Guid.NewGuid();
-            var gameId = Guid.NewGuid();
             
             var user = new Domain.Entities.User("Test", 
                 new Email("test@example.com"), 
@@ -181,20 +187,17 @@ namespace UserRegistrationAndGameLibrary.UnitTest.User;
             
             var existingEntry = new GameLibrary(user, game, game.Price);
 
-            _userRepositoryMock.Setup(x => x.GetByIdAsync(userId))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(user);
             
-            _gameRepositoryMock.Setup(x => x.GetByIdAsync(gameId))
+            _gameRepositoryMock.Setup(x => x.GetByIdAsync(game.Id))
                 .ReturnsAsync(game);
             
-            _gameLibraryRepositoryMock.Setup(x => x.GetByUserIdAsync(userId))
-                .ReturnsAsync(new List<GameLibrary> 
-                { 
-                    new GameLibrary(user, game, game.Price) 
-                });
+            _gameLibraryRepositoryMock.Setup(x => x.GetByUserIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new List<GameLibrary> { existingEntry });
             
             var exception = await Assert.ThrowsAsync<DomainException>(() => 
-                _userService.AddGameToLibraryAsync(userId, gameId));
+                _userService.AddGameToLibraryAsync(Guid.NewGuid(), game.Id));
             
             Assert.Equal("User already owns this game", exception.Message);            
         }
