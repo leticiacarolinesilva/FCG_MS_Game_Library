@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
 namespace UserRegistrationAndGameLibrary.Domain.Entities;

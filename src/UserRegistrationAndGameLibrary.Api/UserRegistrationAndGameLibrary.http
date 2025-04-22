@@ -1,6 +1,6 @@
 @UserRegistrationAndGameLibrary_HostAddress = http://localhost:5209
 
-GET {{UserRegistrationAndGameLibrary_HostAddress}}/weatherforecast/
+GET {{UserRegistrationAndGameLibrary_HostAddress}}/User/
 Accept: application/json
 
 ###

@@ -3,6 +3,7 @@ using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
+using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 
 namespace UserRegistrationAndGameLibrary.Api.Controllers;
 
@@ -13,11 +14,18 @@ namespace UserRegistrationAndGameLibrary.Api.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
+    private ICorrelationIdGeneratorService _correlationIdGenerator;
+    public ILogger Logger;
     private readonly IUserService _uservice;
 
-    public UserController(IUserService uservice)
+    public UserController(
+        ICorrelationIdGeneratorService idGeneratorService,
+        ILogger logger,
+        IUserService uservice)
     {
-        _uservice = uservice;
+        _correlationIdGenerator = idGeneratorService ?? throw new InvalidOperationException(nameof(idGeneratorService));
+        Logger = logger ?? throw new InvalidOperationException(nameof(logger));
+        _uservice = uservice ?? throw new InvalidOperationException(nameof(uservice));
     }
 
     /// <summary>
@@ -32,11 +40,18 @@ public class UserController : ControllerBase
     {
         try
         {
+            Logger.LogInformation($"Start process user registration.");
+
             var user = await _uservice.RegisterUserAsync(request);
+
+            Logger.LogInformation($"Fished process user registration.");
+
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
         catch (DomainException ex)
         {
+            Logger.LogError($"An error occurred in the user registration process. Details Message: {ex.Message}");
+
             return BadRequest(ex.Message);
         }
     }
@@ -53,6 +68,4 @@ public class UserController : ControllerBase
         }
         return Ok(user);
     }
-        
-    
 }

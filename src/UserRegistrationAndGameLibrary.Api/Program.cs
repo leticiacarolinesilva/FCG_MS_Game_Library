@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Services;
@@ -7,14 +8,10 @@ using UserRegistrationAndGameLibrary.Infra.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add PostgreSQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<UserRegistrationDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -40,5 +37,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+#region Middlewares
+app.UseMiddlewareExtensions();
+#endregion
 
 app.Run();
