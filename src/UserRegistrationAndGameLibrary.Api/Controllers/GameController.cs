@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
-using UserRegistrationAndGameLibrary.Application.Services;
-using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
-using UserRegistrationAndGameLibrary.Domain.Interfaces;
 
 namespace UserRegistrationAndGameLibrary.Api.Controllers;
 
