@@ -1,5 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
+
+using UserRegistrationAndGameLibrary.Api.Extensions;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
