@@ -1,7 +1,7 @@
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
-namespace UserRegistrationAndGameLibrary.UnitTest;
+namespace UserRegistrationAndGameLibrary.UnitTest.User;
 
 public class PasswordTests
 {
