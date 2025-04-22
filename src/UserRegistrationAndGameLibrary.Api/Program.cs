@@ -1,5 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
+
+using UserRegistrationAndGameLibrary.Api.Extensions;
+using UserRegistrationAndGameLibrary.Api.Services;
+using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
@@ -22,6 +26,7 @@ builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameLibraryRepository, GameLibraryRepository>();
+builder.Services.AddScoped<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
 
 var app = builder.Build();
 
