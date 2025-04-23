@@ -26,7 +26,7 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users
             .Include(gl => gl.GameLibrary)
-            .FirstOrDefaultAsync(gl => gl.Email == email);
+            .FirstOrDefaultAsync(gl => gl.Email.Value == email);
     }
 
     public async  Task AddAsync(User user)

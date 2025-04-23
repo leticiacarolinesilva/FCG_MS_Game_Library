@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistrationAndGameLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistrationAndGameLibrary.Infra", "src\UserRegistrationAndGameLibrary.Infra\UserRegistrationAndGameLibrary.Infra.csproj", "{A3CE86D7-EAE4-4250-A043-6CA0E1CE7CAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistrationAndGameLibrary.IntegrationTest", "src\UserRegistrationAndGameLibrary.IntegrationTest\UserRegistrationAndGameLibrary.IntegrationTest.csproj", "{063698F0-1FC9-409C-8A7A-C21F3327EAC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{A3CE86D7-EAE4-4250-A043-6CA0E1CE7CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3CE86D7-EAE4-4250-A043-6CA0E1CE7CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3CE86D7-EAE4-4250-A043-6CA0E1CE7CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{063698F0-1FC9-409C-8A7A-C21F3327EAC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{063698F0-1FC9-409C-8A7A-C21F3327EAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{063698F0-1FC9-409C-8A7A-C21F3327EAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{063698F0-1FC9-409C-8A7A-C21F3327EAC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

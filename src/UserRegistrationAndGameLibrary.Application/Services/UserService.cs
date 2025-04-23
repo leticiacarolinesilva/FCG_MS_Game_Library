@@ -39,7 +39,7 @@ public class UserService : IUserService
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         var emailVo = new Email(email);
-        return await _userRepository.GetByEmailAsync(emailVo);
+        return await _userRepository.GetByEmailAsync(emailVo.Value);
         
     }
 
