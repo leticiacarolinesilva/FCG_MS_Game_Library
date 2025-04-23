@@ -1,8 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
-
 using UserRegistrationAndGameLibrary.Api.Extensions;
-
 using UserRegistrationAndGameLibrary.Api.Services;
 using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
@@ -10,6 +8,8 @@ using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
 using UserRegistrationAndGameLibrary.Infra;
 using UserRegistrationAndGameLibrary.Infra.Repository;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +28,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameLibraryRepository, GameLibraryRepository>();
 builder.Services.AddScoped<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -49,3 +51,6 @@ app.UseMiddlewareExtensions();
 #endregion
 
 app.Run();
+
+
+public partial class Program { } 

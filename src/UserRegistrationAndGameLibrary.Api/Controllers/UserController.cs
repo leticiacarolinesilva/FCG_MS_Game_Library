@@ -15,16 +15,13 @@ namespace UserRegistrationAndGameLibrary.Api.Controllers;
 public class UserController : ControllerBase
 {
     private ICorrelationIdGeneratorService _correlationIdGenerator;
-    public ILogger Logger;
     private readonly IUserService _uservice;
 
     public UserController(
         ICorrelationIdGeneratorService idGeneratorService,
-        ILogger logger,
         IUserService uservice)
     {
         _correlationIdGenerator = idGeneratorService ?? throw new InvalidOperationException(nameof(idGeneratorService));
-        Logger = logger ?? throw new InvalidOperationException(nameof(logger));
         _uservice = uservice ?? throw new InvalidOperationException(nameof(uservice));
     }
 
@@ -40,17 +37,12 @@ public class UserController : ControllerBase
     {
         try
         {
-            Logger.LogInformation($"Start process user registration.");
-
             var user = await _uservice.RegisterUserAsync(request);
-
-            Logger.LogInformation($"Fished process user registration.");
-
+            
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
         catch (DomainException ex)
         {
-            Logger.LogError($"An error occurred in the user registration process. Details Message: {ex.Message}");
 
             return BadRequest(ex.Message);
         }
@@ -66,6 +58,12 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(user);
+
+        var response = new ResponseUserDto()
+        {
+            Name = user.Name,
+            Email = user.Email,
+        };
+        return Ok(response);
     }
 }
