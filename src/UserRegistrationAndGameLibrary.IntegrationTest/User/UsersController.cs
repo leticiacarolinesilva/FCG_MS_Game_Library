@@ -10,13 +10,8 @@ namespace UserRegistrationAndGameLibrary.IntegrationTest.User;
 
 public class UsersController : BaseIntegrationTests
 {
-    private const string BASE_URL = "http://localhost:5209/api/User";
-
-	[Fact]
-	public async Task Can_Create_Client()
-	{
-    	Assert.NotNull(HttpClient); // Verify setup worked
-	}
+    private const string BaseUrl = "http://localhost:5209/api/User";
+    
     [Fact]
     public async Task RegisterUser_ShouldReturnCreated_WhenValid()
     {
@@ -27,7 +22,7 @@ public class UsersController : BaseIntegrationTests
             Password = "ValidPass1!"
         };
         
-        var response = await HttpClient.PostAsJsonAsync($"{BASE_URL}/register", request);
+        var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
         
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         
@@ -35,9 +30,26 @@ public class UsersController : BaseIntegrationTests
         Assert.NotNull(location);
         
     }
-    
-    /*[Fact]
-    public async Task RegisterUser_ShouldReturnUserAlreadyCreate_WhenThereIsAlreadyUser()
+
+    [Theory]
+    [InlineData("Test User", "not-an-email", "ValidPass1!")]
+    [InlineData("Test User", "test@test.com", "not-an-password")]
+    [InlineData("", "test@test.com", "ValidPass1!")]
+    public async Task RegisterUser_ShouldReturnBadRequest_WhenNameOrEmailOrPasswordAreInvalid(string name, string email, string password)
+    {
+        var invalidUser = new RegisterUserDto
+        {
+            Name = name,
+            Email = email,
+            Password = password
+
+        };
+        
+        var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", invalidUser);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+    [Fact]
+    public async Task RegisterUser_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
         var request = new RegisterUserDto
         {
@@ -46,23 +58,21 @@ public class UsersController : BaseIntegrationTests
             Password = "ValidPass1!"
         };
         
-        var response = await HttpClient.PostAsJsonAsync($"{BASE_URL}/register", request);
+        await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
         
-        var newResponse = await HttpClient.PostAsJsonAsync($"{BASE_URL}/register", request);
+        var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
         
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        //TODO improve the return to show Notification instead of exceptions
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         
-        var location = response.Headers.Location;
-        Assert.NotNull(location);
-        
-    } */   
+    }    
 
     [Fact]
     public async Task RegisterUser_ShouldReturnNotFound_WhenIsNotRegisteredYet()
     {
         var email = "notexist@test.com";
         
-        var response = await HttpClient.GetAsync($"{BASE_URL}/?email={email}");
+        var response = await HttpClient.GetAsync($"{BaseUrl}/?email={email}");
         
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var location = response.Headers.Location;
