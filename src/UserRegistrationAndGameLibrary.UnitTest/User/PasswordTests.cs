@@ -19,7 +19,7 @@ public class PasswordTests
     [InlineData("longenoughwithoutnumbers")]
     [InlineData("1234567890")]
     [InlineData("noSpecialChars123")] 
-    [InlineData("noSpecialChars123")] 
+ 
     public void Password_ShouldThrowException_WhenNotSecured(string password)
     {
         Assert.Throws<DomainException>(() => new Password(password));

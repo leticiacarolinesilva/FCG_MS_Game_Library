@@ -37,9 +37,14 @@ public class UserController : ControllerBase
     {
         try
         {
-            var user = await _uservice.RegisterUserAsync(request);
+
+            if (!string.IsNullOrWhiteSpace(request.Name))
+            {
+                var user = await _uservice.RegisterUserAsync(request);
             
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);                
+            }
+            return BadRequest();
         }
         catch (DomainException ex)
         {

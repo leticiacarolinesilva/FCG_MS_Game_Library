@@ -33,7 +33,7 @@ public class Email
             var regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             return regex.IsMatch(email);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return false;
         }
