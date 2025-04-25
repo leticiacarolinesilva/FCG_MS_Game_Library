@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+
 using UserRegistrationAndGameLibrary.Api.Extensions;
 using UserRegistrationAndGameLibrary.Api.Services;
 using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
@@ -8,8 +9,6 @@ using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
 using UserRegistrationAndGameLibrary.Infra;
 using UserRegistrationAndGameLibrary.Infra.Repository;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 

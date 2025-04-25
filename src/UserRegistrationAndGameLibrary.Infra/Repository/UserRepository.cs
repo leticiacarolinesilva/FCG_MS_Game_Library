@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
-using UserRegistrationAndGameLibrary.Infra;
 
 namespace UserRegistrationAndGameLibrary.Infra.Repository;
 
@@ -13,7 +13,6 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
-
 
     public async Task<User?> GetByIdAsync(Guid id)
     {

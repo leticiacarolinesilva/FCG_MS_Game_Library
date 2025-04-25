@@ -1,5 +1,3 @@
-using UserRegistrationAndGameLibrary.Domain.ValueObjects;
-
 namespace UserRegistrationAndGameLibrary.Application.Dtos;
 
 public class RegisterUserDto

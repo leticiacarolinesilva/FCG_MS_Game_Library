@@ -48,6 +48,7 @@ public class UsersController : BaseIntegrationTests
         var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", invalidUser);
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
+
     [Fact]
     public async Task RegisterUser_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
@@ -78,5 +79,4 @@ public class UsersController : BaseIntegrationTests
         var location = response.Headers.Location;
         Assert.Null(location);
     }
-
 }

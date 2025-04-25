@@ -1,6 +1,7 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Testcontainers.PostgreSql;
-using UserRegistrationAndGameLibrary.Api;
+
 using UserRegistrationAndGameLibrary.Infra;
+
 using Xunit;
 
 namespace UserRegistrationAndGameLibrary.IntegrationTest;

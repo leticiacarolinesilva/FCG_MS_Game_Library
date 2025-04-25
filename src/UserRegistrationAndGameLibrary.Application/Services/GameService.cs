@@ -87,6 +87,4 @@ public class GameService : IGameService
     {
         return await _gameRepository.GetByGenreAsync(genre);
     }
-    
-    
 }

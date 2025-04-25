@@ -21,8 +21,8 @@ public class UserController : ControllerBase
         ICorrelationIdGeneratorService idGeneratorService,
         IUserService uservice)
     {
-        _correlationIdGenerator = idGeneratorService ?? throw new InvalidOperationException(nameof(idGeneratorService));
-        _uservice = uservice ?? throw new InvalidOperationException(nameof(uservice));
+        _correlationIdGenerator = idGeneratorService;
+        _uservice = uservice;
     }
 
     /// <summary>

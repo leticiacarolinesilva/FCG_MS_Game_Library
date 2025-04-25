@@ -70,6 +70,4 @@ public class User
         }
         Name = name.Trim();
     }
-    
-    
 }

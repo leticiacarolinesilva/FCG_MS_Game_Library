@@ -18,6 +18,7 @@ public class GameLibraryController: ControllerBase
     {
         _gameLibraryService = gameLibraryService;
     }
+
     /// <summary>
     /// Get all games in user's library
     /// </summary>
@@ -42,6 +43,7 @@ public class GameLibraryController: ControllerBase
         
         return Ok(dtos);
     }
+
     /// <summary>
     /// Get specific Game Library entry
     /// </summary>
@@ -69,6 +71,7 @@ public class GameLibraryController: ControllerBase
             PurchasePrice = libraryData.PurchasePrice,
             IsInstalled = libraryData.IsInstalled,
         };
+
         return Ok(dto);
     }    
 
@@ -155,6 +158,4 @@ public class GameLibraryController: ControllerBase
             throw;
         }
     }
-    
-
 }

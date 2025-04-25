@@ -1,4 +1,3 @@
-using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
 namespace UserRegistrationAndGameLibrary.UnitTest.User;
@@ -36,7 +35,6 @@ public class UsersTests
     {
     
         var longName = new string('a', 101); // 101 characters
-
         
         Assert.Throws<ArgumentException>(() => 
             new Domain.Entities.User(longName, _validEmail, _validPassword));
@@ -44,7 +42,6 @@ public class UsersTests
     [Fact]
     public void SetName_ShouldUpdate_WhenValid()
     {
-        
         var user = new Domain.Entities.User("Old Name", _validEmail, _validPassword);
         const string newName = "New Name";
         

@@ -12,5 +12,4 @@ public enum GameGenre
     Horror,
     MMO,
     FPS,
-
 }

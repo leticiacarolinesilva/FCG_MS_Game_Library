@@ -12,7 +12,6 @@ public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
 
-
     public GameController(IGameService gameService)
     {
         _gameService = gameService;
@@ -80,7 +79,6 @@ public class GameController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<GameDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetGamesByGenre(string genre)
     {
-        
         if (!Enum.TryParse<GameGenre>(genre, out var gameGenre))
         {
             return BadRequest("Invalid game genre");
@@ -106,7 +104,6 @@ public class GameController : ControllerBase
     /// </summary>
     /// <param name="dto">Use's a CreateGameDto class</param>
     /// <returns>A new game created</returns>
-
     [HttpPost]
     [ProducesResponseType(typeof(GameDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -140,14 +137,13 @@ public class GameController : ControllerBase
             };
             
             return CreatedAtAction(nameof(GetGameById), new { id = game.Id }, responseDto);
-
-
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
+
     /// <summary>
     /// Update an existing game
     /// </summary>
@@ -188,7 +184,6 @@ public class GameController : ControllerBase
     /// </summary>
     /// <param name="id">GameId</param>
     /// <returns>A game was deleted</returns>
-    
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
