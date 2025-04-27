@@ -5,6 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableEfCoreDesignTimeServices>true</EnableEfCoreDesignTimeServices>
         <Nullable>enable</Nullable>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
     </PropertyGroup>
 
     <ItemGroup>

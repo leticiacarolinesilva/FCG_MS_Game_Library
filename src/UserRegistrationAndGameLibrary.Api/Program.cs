@@ -1,14 +1,10 @@
-
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 using UserRegistrationAndGameLibrary.Api.Extensions;
-using UserRegistrationAndGameLibrary.Api.Services;
-using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
-using UserRegistrationAndGameLibrary.Application.Interfaces;
-using UserRegistrationAndGameLibrary.Application.Services;
-using UserRegistrationAndGameLibrary.Domain.Interfaces;
 using UserRegistrationAndGameLibrary.Infra;
-using UserRegistrationAndGameLibrary.Infra.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,15 +16,38 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<UserRegistrationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddScoped<IGameService, GameService>();
 
+builder.Services.UseServiceCollectionExtensions();
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IGameRepository, GameRepository>();
-builder.Services.AddScoped<IGameLibraryRepository, GameLibraryRepository>();
-builder.Services.AddScoped<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+});
 
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            new string[] { }
+        }
+    });
+});
 
 var app = builder.Build();
 
@@ -39,7 +58,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<UserRegistrationDbContext>();
+    dbContext.Database.Migrate();
+}
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
@@ -52,4 +79,4 @@ app.UseMiddlewareExtensions();
 app.Run();
 
 
-public partial class Program { } 
+public partial class Program { }
