@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+
+using UserRegistrationAndGameLibrary.Api.Filters;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Enums;
@@ -23,6 +25,7 @@ public class GameController : ControllerBase
     /// <returns>List of all games</returns>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<GameDto>), StatusCodes.Status200OK)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> GetAllGames()
     {
         var games = await _gameService.GetAllGamesAsync();
@@ -48,6 +51,7 @@ public class GameController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(GameDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> GetGameById(Guid id)
     {
         var game = await _gameService.GetGameByIdAsync(id);
@@ -77,6 +81,7 @@ public class GameController : ControllerBase
     /// <returns></returns>
     [HttpGet("genre/{genre}")]
     [ProducesResponseType(typeof(IEnumerable<GameDto>), StatusCodes.Status200OK)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> GetGamesByGenre(string genre)
     {
         if (!Enum.TryParse<GameGenre>(genre, out var gameGenre))
@@ -107,6 +112,7 @@ public class GameController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(GameDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
     public async Task<IActionResult> CreateGame([FromBody] CreateGameDto dto)
     {
         try
@@ -154,6 +160,7 @@ public class GameController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
     public async Task<IActionResult> UpdateGame(Guid id, [FromBody] UpdateGameDto dto)
     {
         try
@@ -188,6 +195,7 @@ public class GameController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
     public async Task<IActionResult> DeleteGame(Guid id)
     {
         try

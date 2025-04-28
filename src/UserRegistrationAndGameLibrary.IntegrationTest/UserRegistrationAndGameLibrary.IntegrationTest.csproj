@@ -27,4 +27,8 @@
         <ProjectReference Include="..\UserRegistrationAndGameLibrary.Api\UserRegistrationAndGameLibrary.Api.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Auth\" />
+    </ItemGroup>
+
 </Project>

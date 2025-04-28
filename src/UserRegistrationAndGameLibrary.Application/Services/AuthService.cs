@@ -42,7 +42,7 @@ public class AuthService : IAuthService
                 Subject = new ClaimsIdentity(new[]
                 {
                 new Claim(ClaimTypes.Name, responseUser.Name),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, responseUser.Permission.ToString())
             }),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(
