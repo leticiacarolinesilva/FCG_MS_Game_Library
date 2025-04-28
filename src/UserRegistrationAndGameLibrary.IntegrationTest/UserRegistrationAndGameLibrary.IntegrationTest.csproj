@@ -8,6 +8,8 @@
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <GenerateDependencyFile>true</GenerateDependencyFile>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,6 +25,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\UserRegistrationAndGameLibrary.Api\UserRegistrationAndGameLibrary.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Auth\" />
     </ItemGroup>
 
 </Project>

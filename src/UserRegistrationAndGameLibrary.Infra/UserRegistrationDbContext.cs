@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 
 namespace UserRegistrationAndGameLibrary.Infra;
+
 public class UserRegistrationDbContext : DbContext
 {
     public UserRegistrationDbContext(DbContextOptions<UserRegistrationDbContext> options) : base(options)
@@ -45,6 +46,5 @@ public class UserRegistrationDbContext : DbContext
         });
         
         base.OnModelCreating(modelBuilder);
-        
     }
 }

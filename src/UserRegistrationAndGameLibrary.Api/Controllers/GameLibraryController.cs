@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+
+using UserRegistrationAndGameLibrary.Api.Filters;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Services;
+using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 
 namespace UserRegistrationAndGameLibrary.Api.Controllers;
@@ -18,6 +21,7 @@ public class GameLibraryController: ControllerBase
     {
         _gameLibraryService = gameLibraryService;
     }
+
     /// <summary>
     /// Get all games in user's library
     /// </summary>
@@ -26,6 +30,7 @@ public class GameLibraryController: ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<GameLibraryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> GetUserLibrary(Guid userId)
     {
         var librayData = await _gameLibraryService.GetUserLibraryAsync(userId);
@@ -42,6 +47,7 @@ public class GameLibraryController: ControllerBase
         
         return Ok(dtos);
     }
+
     /// <summary>
     /// Get specific Game Library entry
     /// </summary>
@@ -51,6 +57,7 @@ public class GameLibraryController: ControllerBase
     [HttpGet("{entryId}")]
     [ProducesResponseType(typeof(GameLibraryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(404)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> GetGameLibrary(Guid userId, Guid entryId)
     {
         var libraryData = await _gameLibraryService.GetLibraryEntryAsync(entryId, userId);
@@ -69,6 +76,7 @@ public class GameLibraryController: ControllerBase
             PurchasePrice = libraryData.PurchasePrice,
             IsInstalled = libraryData.IsInstalled,
         };
+
         return Ok(dto);
     }    
 
@@ -82,6 +90,7 @@ public class GameLibraryController: ControllerBase
     [ProducesResponseType(typeof(GameLibraryDto), 201)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> PurchaseGame(Guid userId, Guid gameId)
     {
         try
@@ -118,6 +127,7 @@ public class GameLibraryController: ControllerBase
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> UpdateInstallationStatus(Guid userId, Guid entryId, bool installationStatus)
     {
         try
@@ -142,6 +152,7 @@ public class GameLibraryController: ControllerBase
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> RemoveFromLibrary(Guid userId, Guid entryId)
     {
         try
@@ -155,6 +166,4 @@ public class GameLibraryController: ControllerBase
             throw;
         }
     }
-    
-
 }

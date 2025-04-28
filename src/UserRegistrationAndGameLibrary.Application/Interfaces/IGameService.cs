@@ -4,7 +4,6 @@ using UserRegistrationAndGameLibrary.Domain.Enums;
 namespace UserRegistrationAndGameLibrary.Application.Interfaces;
 
 public interface IGameService
-
 {
     Task<Game> CreateGameAsync(string title, string description, decimal price, 
         DateTime releaseDate, GameGenre genre, string coverImageUrl);

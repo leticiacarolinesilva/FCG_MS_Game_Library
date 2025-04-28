@@ -1,16 +1,24 @@
-﻿using System.IO;
+using System.IdentityModel.Tokens.Jwt;
+using System;
+using System.IO;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 
 using Testcontainers.PostgreSql;
-using UserRegistrationAndGameLibrary.Api;
+
 using UserRegistrationAndGameLibrary.Infra;
+
 using Xunit;
+using System.Net.Http.Headers;
 
 namespace UserRegistrationAndGameLibrary.IntegrationTest;
 
@@ -50,7 +58,9 @@ public class BaseIntegrationTests : IAsyncLifetime
             });
 
         HttpClient = _factory.CreateClient();
-    
+
+        HttpClient.DefaultRequestHeaders.Authorization = GetToken();
+
         // Create a scope to resolve DbContext
         var scope = _factory.Services.CreateScope();
         DbContext = scope.ServiceProvider.GetRequiredService<UserRegistrationDbContext>();
@@ -67,5 +77,29 @@ public class BaseIntegrationTests : IAsyncLifetime
         await DbContainer.DisposeAsync();
         HttpClient?.Dispose();
         _factory?.Dispose();
+    }
+
+    public AuthenticationHeaderValue GetToken()
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var jwtKey = Encoding.ASCII.GetBytes("S2V5Snd0VXNlclJlZ2lzdHJhdGlvbkFuZEdhbWVMaWJyYXJ5");
+
+        var tokenPropriedades = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name,"Test User"),
+                new Claim(ClaimTypes.Role, "Admin")
+            }),
+            Expires = DateTime.UtcNow.AddMinutes(30),
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(jwtKey),
+                SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenPropriedades);
+
+        return new AuthenticationHeaderValue("Bearer", tokenHandler.WriteToken(token));
     }
 }

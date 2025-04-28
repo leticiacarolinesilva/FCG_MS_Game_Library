@@ -1,4 +1,6 @@
-using UserRegistrationAndGameLibrary.Domain.ValueObjects;
+using System.ComponentModel.DataAnnotations;
+
+using UserRegistrationAndGameLibrary.Domain.Enums;
 
 namespace UserRegistrationAndGameLibrary.Application.Dtos;
 
@@ -7,13 +9,29 @@ public class RegisterUserDto
     /// <summary>
     /// User's full name
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    [Required]
+    public required string Name { get; set; }
     /// <summary>
     /// User's email address will be used for authentication
     /// </summary>
-    public string Email { get; set; } = string.Empty;
+    [Required]
+    public required string Email { get; set; }
     /// <summary>
     /// Hashed password 
     /// </summary>
-    public string Password { get; set; } = string.Empty;
+    [Required]
+    [DataType(DataType.Password)]
+    public required string Password { get; set; }
+    /// <summary>
+    /// Compare Password 
+    /// </summary>
+    [Required]
+    [Compare("Password")]
+    public required string ConfirmationPassword { get; set; }
+
+    /// <summary>
+    /// Permissions that the user has access to
+    /// </summary>
+    [Required]
+    public required AuthorizationPermissions Permission { get; set; }
 }

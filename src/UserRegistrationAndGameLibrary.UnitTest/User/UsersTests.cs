@@ -1,4 +1,3 @@
-using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
 namespace UserRegistrationAndGameLibrary.UnitTest.User;
@@ -13,7 +12,7 @@ public class UsersTests
     {
         const string name = "Test User";
         
-        var user = new Domain.Entities.User(name, _validEmail, _validPassword);
+        var user = new Domain.Entities.User(name, _validEmail, _validPassword, default);
 
         Assert.Equal(name, user.Name);
         Assert.Equal(_validEmail.Value, user.Email.Value);
@@ -28,7 +27,7 @@ public class UsersTests
     {
        
         Assert.Throws<ArgumentException>(() => 
-            new Domain.Entities.User(name, _validEmail, _validPassword));
+            new Domain.Entities.User(name, _validEmail, _validPassword, default));
     }
 
     [Fact]
@@ -36,16 +35,14 @@ public class UsersTests
     {
     
         var longName = new string('a', 101); // 101 characters
-
         
         Assert.Throws<ArgumentException>(() => 
-            new Domain.Entities.User(longName, _validEmail, _validPassword));
+            new Domain.Entities.User(longName, _validEmail, _validPassword, default));
     }   
     [Fact]
     public void SetName_ShouldUpdate_WhenValid()
     {
-        
-        var user = new Domain.Entities.User("Old Name", _validEmail, _validPassword);
+        var user = new Domain.Entities.User("Old Name", _validEmail, _validPassword, default);
         const string newName = "New Name";
         
         user.SetName(newName);
@@ -56,7 +53,7 @@ public class UsersTests
     [Fact]
     public void User_ShouldInitializeGameLibraryAsEmpty()
     {
-        var user = new Domain.Entities.User("Test User", _validEmail, _validPassword);
+        var user = new Domain.Entities.User("Test User", _validEmail, _validPassword, default);
 
         Assert.NotNull(user.GameLibrary);
         Assert.Empty(user.GameLibrary);

@@ -1,6 +1,9 @@
-﻿using UserRegistrationAndGameLibrary.Api.Controllers;
 using UserRegistrationAndGameLibrary.Api.Services;
 using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
+using UserRegistrationAndGameLibrary.Application.Interfaces;
+using UserRegistrationAndGameLibrary.Application.Services;
+using UserRegistrationAndGameLibrary.Domain.Interfaces;
+using UserRegistrationAndGameLibrary.Infra.Repository;
 
 namespace UserRegistrationAndGameLibrary.Api.Extensions
 {
@@ -10,9 +13,17 @@ namespace UserRegistrationAndGameLibrary.Api.Extensions
         {
             services.AddTransient<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
 
-            var serviceProvider = services.BuildServiceProvider();
-            var logger = serviceProvider.GetService<ILogger<UserController>>();
-            services.AddSingleton(typeof(ILogger), logger ?? throw new InvalidOperationException(nameof(logger)));
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IGameLibraryRepository, GameLibraryRepository>();
+            services.AddScoped<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+
+            //var serviceProvider = services.BuildServiceProvider();
+            //var logger = serviceProvider.GetService<ILogger<UserController>>();
+            //services.AddSingleton(typeof(ILogger), logger ?? throw new InvalidOperationException(nameof(logger)));
 
             return services;
         }

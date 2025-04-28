@@ -4,6 +4,8 @@ using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
+using UserRegistrationAndGameLibrary.Api.Filters;
+using UserRegistrationAndGameLibrary.Domain.Enums;
 
 namespace UserRegistrationAndGameLibrary.Api.Controllers;
 
@@ -21,8 +23,8 @@ public class UserController : ControllerBase
         ICorrelationIdGeneratorService idGeneratorService,
         IUserService uservice)
     {
-        _correlationIdGenerator = idGeneratorService ?? throw new InvalidOperationException(nameof(idGeneratorService));
-        _uservice = uservice ?? throw new InvalidOperationException(nameof(uservice));
+        _correlationIdGenerator = idGeneratorService;
+        _uservice = uservice;
     }
 
     /// <summary>
@@ -33,12 +35,12 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType(typeof(User), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto request)
     {
         try
         {
-
-            if (!string.IsNullOrWhiteSpace(request.Name))
+            if (!string.IsNullOrWhiteSpace(request?.Name))
             {
                 var user = await _uservice.RegisterUserAsync(request);
             
@@ -53,9 +55,15 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Get user by email
+    /// </summary>
+    /// <param name="email">Email user</param>
+    /// <returns>User properties</returns>
     [HttpGet]
     [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
     public async Task<IActionResult> GetUser([FromQuery] string email)
     {
         var user = await _uservice.GetUserByEmailAsync(email);
