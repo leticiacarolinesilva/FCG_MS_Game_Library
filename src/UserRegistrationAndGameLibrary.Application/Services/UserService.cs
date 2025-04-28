@@ -30,7 +30,7 @@ public class UserService : IUserService
         var emailVo = new Email(userDto.Email);
         var passwordVo = new Password(userDto.Password);
         
-        var user = new User(userDto.Name,emailVo, passwordVo);
+        var user = new User(userDto.Name,emailVo, passwordVo, userDto.Permission);
         await _userRepository.AddAsync(user);
         
         return user;

@@ -16,6 +16,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<UserRegistrationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.UseServiceCollectionExtensions();
 

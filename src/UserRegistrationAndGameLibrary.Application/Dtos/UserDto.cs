@@ -1,8 +1,13 @@
-﻿namespace UserRegistrationAndGameLibrary.Application.Dtos;
+using System.ComponentModel.DataAnnotations;
+
+namespace UserRegistrationAndGameLibrary.Application.Dtos;
 
 public class UserDto
 {
-    public string Email { get; set; }
+    [Required]
+    public required string Email { get; set; }
 
-    public string Senha { get; set; }
+    [Required]
+    [DataType(DataType.Password)]
+    public required string Password { get; set; }
 }

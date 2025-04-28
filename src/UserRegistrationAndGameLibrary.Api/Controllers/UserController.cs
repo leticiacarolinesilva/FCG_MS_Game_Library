@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (!string.IsNullOrWhiteSpace(request.Name))
+            if (!string.IsNullOrWhiteSpace(request?.Name))
             {
                 var user = await _uservice.RegisterUserAsync(request);
             

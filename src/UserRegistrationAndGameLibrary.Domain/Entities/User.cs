@@ -1,3 +1,4 @@
+using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
 namespace UserRegistrationAndGameLibrary.Domain.Entities;
@@ -30,8 +31,13 @@ public class User
     /// <summary>
     /// Collection of games owned by the user
     /// </summary>
-    public ICollection<GameLibrary> GameLibrary { get; private set; } = new List<GameLibrary>(); 
-    
+    public ICollection<GameLibrary> GameLibrary { get; private set; } = new List<GameLibrary>();
+
+    /// <summary>
+    /// Permissions that the user has access to
+    /// </summary>
+    public  AuthorizationPermissions Permission { get; private set; }
+
     /// <summary>
     /// Used for EF Core
     /// </summary>
@@ -43,13 +49,15 @@ public class User
     /// <param name="name">User's full name</param>
     /// <param name="email">User's email address will be used for authentication</param>
     /// <param name="password">Hashed password </param>
-    public User(string name, Email email, Password password)
+    /// <param name="permissions">Hashed password </param>
+    public User(string name, Email email, Password password, AuthorizationPermissions permissions)
     {
         Id = Guid.NewGuid();
         SetName(name);
         Email = email;
         Password = password;
         CreateAt = DateTime.UtcNow;
+        Permission = permissions;
     }
 
     /// <summary>
