@@ -61,4 +61,23 @@ public class UserService : IUserService
         await _gameLibraryRepository.AddAsync(gameLibrary);
         return gameLibrary;
     }
+
+    public async Task<List<ResponseUserDto>> SearchUsersAsync(string email, string name)
+    {
+        var users = await _userRepository.SearchUsersAsync(email, name);
+
+        var responseUserDto = new List<ResponseUserDto>();
+
+        foreach (var user in users)
+        {
+            var response = new ResponseUserDto()
+            {
+                Name = user.Name,
+                Email = user.Email,
+            };
+            responseUserDto.Add(response);
+        }
+
+        return responseUserDto;
+    }
 }
