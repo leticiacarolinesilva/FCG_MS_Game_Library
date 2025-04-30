@@ -1,6 +1,10 @@
+using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 
 using UserRegistrationAndGameLibrary.Application.Dtos;
 
@@ -85,4 +89,81 @@ public class UsersController : BaseIntegrationTests
         Assert.Null(location);
     }
 
+    [Fact]
+    public async Task RegisterUser_WhenSendEmailAndName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    {
+        var request = new RegisterUserDto
+        {
+            Name = "Test User",
+            Email = "test@example.com",
+            Password = "ValidPass1!",
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
+        };
+
+        var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
+
+        var response = await HttpClient.GetAsync($"{BaseUrl}?email={request.Email}&name={request.Name}");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, responseCreation.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        var users =  JsonConvert.DeserializeObject<List<ResponseUserDto>>(content);
+
+        Assert.Contains(users, x => x.Name == request.Name && x.Email == request.Email);
+    }
+
+    [Fact]
+    public async Task RegisterUser_WhenSendOnlyEmail_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    {
+        var request = new RegisterUserDto
+        {
+            Name = "Test User",
+            Email = "test@example.com",
+            Password = "ValidPass1!",
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
+        };
+
+        var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
+
+        var response = await HttpClient.GetAsync($"{BaseUrl}?email={request.Email}");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, responseCreation.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        var users = JsonConvert.DeserializeObject<List<ResponseUserDto>>(content);
+
+        Assert.Contains(users, x => x.Name == request.Name && x.Email == request.Email);
+    }
+
+    [Fact]
+    public async Task RegisterUser_WhenSendOnlyName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    {
+        var request = new RegisterUserDto
+        {
+            Name = "Test User",
+            Email = "test@example.com",
+            Password = "ValidPass1!",
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
+        };
+
+        var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
+
+        var response = await HttpClient.GetAsync($"{BaseUrl}?name={request.Name}");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, responseCreation.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        var users = JsonConvert.DeserializeObject<List<ResponseUserDto>>(content);
+
+        Assert.Contains(users, x => x.Name == request.Name && x.Email == request.Email);
+    }
 }

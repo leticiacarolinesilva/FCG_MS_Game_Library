@@ -207,4 +207,79 @@ public class UserServiceTests
 
         Assert.Equal("User already owns this game", exception.Message);
     }
+
+    [Fact]
+    public async Task SearchUsersAsync_ShouldReturnUser_WhenExists()
+    {
+
+        const string email = "test@example.com";
+        const string name = "Test";
+        var userList = new List<Domain.Entities.User>();
+        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"), default);
+        userList.Add(expectedUser);
+
+        _userRepositoryMock.Setup(x => x.SearchUsersAsync(email, name))
+            .ReturnsAsync(userList);
+
+        var result = await _userService.SearchUsersAsync(email, name);
+
+        Assert.Contains(result, x =>
+            x.Name.Equals(expectedUser.Name, StringComparison.Ordinal) &&
+            x.Email.Equals(expectedUser.Email, StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task SearchUsersAsync_WhenSendOnlyEmail_ShouldReturnUser_WhenExists()
+    {
+
+        const string email = "test@example.com";
+        var userList = new List<Domain.Entities.User>();
+        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"), default);
+        userList.Add(expectedUser);
+
+        _userRepositoryMock.Setup(x => x.SearchUsersAsync(email, default))
+            .ReturnsAsync(userList);
+
+        var result = await _userService.SearchUsersAsync(email, default);
+
+        Assert.Contains(result, x =>
+            x.Name.Equals(expectedUser.Name, StringComparison.Ordinal) &&
+            x.Email.Equals(expectedUser.Email, StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task SearchUsersAsync_WhenSendOnlyName_ShouldReturnUser_WhenExists()
+    {
+
+        const string name = "Test";
+        var userList = new List<Domain.Entities.User>();
+        var expectedUser = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"), default);
+        userList.Add(expectedUser);
+
+        _userRepositoryMock.Setup(x => x.SearchUsersAsync(default, name))
+            .ReturnsAsync(userList);
+
+        var result = await _userService.SearchUsersAsync(default, name);
+
+        Assert.Contains(result, x =>
+            x.Name.Equals(expectedUser.Name, StringComparison.Ordinal) &&
+            x.Email.Equals(expectedUser.Email, StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task SearchUsersAsync_ShouldReturnNull_WhenNotExists()
+    {
+        // Arrange
+        const string email = "nonexistent@example.com";
+        const string name = "nonexistent";
+
+        _userRepositoryMock.Setup(x => x.SearchUsersAsync(email, name))
+            .ReturnsAsync(new List<Domain.Entities.User>());
+
+        // Act
+        var result = await _userService.SearchUsersAsync(email, name);
+
+        // Assert
+        Assert.True(result.Count == 0);
+    }
 }
