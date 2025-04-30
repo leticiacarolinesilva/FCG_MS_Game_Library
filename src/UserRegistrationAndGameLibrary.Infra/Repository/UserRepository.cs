@@ -40,4 +40,23 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
         
     }
+
+    public async Task<List<User>> SearchUsersAsync(string? email, string? name)
+    {
+        var query = _context.Users
+            .Include(u => u.GameLibrary)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            query = query.Where(u => u.Name.Contains(name));
+        }
+
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            query = query.Where(u => u.Email.Value == email);
+        }
+
+        return await query.ToListAsync();
+    }
 }
