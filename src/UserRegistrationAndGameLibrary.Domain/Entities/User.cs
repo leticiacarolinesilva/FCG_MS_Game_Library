@@ -1,4 +1,3 @@
-using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
 namespace UserRegistrationAndGameLibrary.Domain.Entities;
@@ -39,11 +38,6 @@ public class User
     public UserAuthorization Authorization { get; private set; }
 
     /// <summary>
-    /// Permissions that the user has access to
-    /// </summary>
-    public AuthorizationPermissions Permission { get; private set; }
-
-    /// <summary>
     /// Used for EF Core
     /// </summary>
     private User(){}
@@ -55,14 +49,13 @@ public class User
     /// <param name="email">User's email address will be used for authentication</param>
     /// <param name="password">Hashed password </param>
     /// <param name="permissions">Hashed password </param>
-    public User(string name, Email email, Password password, AuthorizationPermissions permissions)
+    public User(string name, Email email, Password password)
     {
         Id = Guid.NewGuid();
         SetName(name);
         Email = email;
         Password = password;
         CreateAt = DateTime.UtcNow;
-        Permission = permissions;
     }
 
     /// <summary>

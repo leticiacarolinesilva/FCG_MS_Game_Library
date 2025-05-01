@@ -12,12 +12,18 @@ public class UserService : IUserService
     private readonly IGameLibraryRepository _gameLibraryRepository;
     private readonly IUserRepository _userRepository;
     private readonly IGameRepository _gameRepository;
+    private readonly IUserAuthorizationRepository _userAuthorizationRepository;
 
-    public UserService(IGameLibraryRepository gameLibraryRepository, IUserRepository userRepository, IGameRepository gameRepository)
+    public UserService(
+        IGameLibraryRepository gameLibraryRepository, 
+        IUserRepository userRepository, 
+        IGameRepository gameRepository,
+        IUserAuthorizationRepository userAuthorizationRepository)
     {
         _gameLibraryRepository = gameLibraryRepository;
         _userRepository = userRepository;
         _gameRepository = gameRepository;
+        _userAuthorizationRepository = userAuthorizationRepository;
     }
     
     public async Task<User> RegisterUserAsync(RegisterUserDto userDto)
@@ -30,9 +36,12 @@ public class UserService : IUserService
         var emailVo = new Email(userDto.Email);
         var passwordVo = new Password(userDto.Password);
         
-        var user = new User(userDto.Name,emailVo, passwordVo, userDto.Permission);
+        var user = new User(userDto.Name,emailVo, passwordVo);
         await _userRepository.AddAsync(user);
-        
+
+        var userAuthorization = new UserAuthorization(user.Id, userDto.Permission);
+        await _userAuthorizationRepository.AddAsync(userAuthorization);
+
         return user;
     }
 

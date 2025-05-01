@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
+using UserRegistrationAndGameLibrary.Api.Filters;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
+using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 
 namespace UserRegistrationAndGameLibrary.Api.Controllers;
@@ -51,6 +53,7 @@ public class UserAuthorizationController : ControllerBase
     /// <param name="request">Autorization data</param>
     /// <returns>Status code created</returns>
     [HttpPost("user-permissions")]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
     public async Task<IActionResult> AddPermissionByUser([FromBody] UserAuthorizationDto request)
     {
         try
@@ -71,6 +74,7 @@ public class UserAuthorizationController : ControllerBase
     /// <param name="request">Autorization data</param>
     /// <returns>Status code created</returns>
     [HttpPut("user-permissions")]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
     public async Task<IActionResult> UpdatePermissionByUser([FromBody] UserAuthorizationDto request)
     {
         try

@@ -110,7 +110,9 @@ public class UserAuthorizationService : IUserAuthorizationService
 
             var userAuthorization = new UserAuthorization(request.UserId, request.Permission);
 
-            await _userAuthorizationRepository.UpdateAsync(userAuthorization);
+            responseUserAuth.ChangePermission(request.Permission);
+
+            await _userAuthorizationRepository.UpdateAsync(responseUserAuth);
 
             return $"Permission successfully updated for user: Email: {user.Email}, Permission: {userAuthorization.Permission}";
         }

@@ -36,8 +36,7 @@ public class UserServiceTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = AuthorizationPermissions.User
+            ConfirmationPassword = "ValidPass1!"
         };
 
         _userRepositoryMock.Setup(x => x.GetByEmailAsync(dto.Email))
@@ -62,11 +61,10 @@ public class UserServiceTests
             Name = "Test User",
             Email = "existing@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = AuthorizationPermissions.User
+            ConfirmationPassword = "ValidPass1!"
         };
 
-        var existingUser = new Domain.Entities.User("Existing", new Email(dto.Email), new Password(dto.Password), default);
+        var existingUser = new Domain.Entities.User("Existing", new Email(dto.Email), new Password(dto.Password));
 
         _userRepositoryMock.Setup(x => x.GetByEmailAsync(dto.Email))
             .ReturnsAsync(existingUser);
@@ -80,7 +78,7 @@ public class UserServiceTests
     {
 
         const string email = "test@example.com";
-        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"), default);
+        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"));
 
         _userRepositoryMock.Setup(x => x.GetByEmailAsync(email))
             .ReturnsAsync(expectedUser);
@@ -112,8 +110,7 @@ public class UserServiceTests
 
         var user = new Domain.Entities.User("Test User",
             new Email("test@example.com"),
-            new Password("ValidPass1!"),
-            default);
+            new Password("ValidPass1!"));
 
         var game = new Game(
             "Test Game",
@@ -163,7 +160,7 @@ public class UserServiceTests
 
         var userId = Guid.NewGuid();
         var gameId = Guid.NewGuid();
-        var user = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"), default);
+        var user = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"));
 
         _userRepositoryMock.Setup(x => x.GetByIdAsync(userId))
             .ReturnsAsync(user);
@@ -181,8 +178,7 @@ public class UserServiceTests
 
         var user = new Domain.Entities.User("Test",
             new Email("test@example.com"),
-            new Password("ValidPass1!"),
-            default);
+            new Password("ValidPass1!"));
 
         var game = new Game("Test Game",
             "Description",
@@ -215,7 +211,7 @@ public class UserServiceTests
         const string email = "test@example.com";
         const string name = "Test";
         var userList = new List<Domain.Entities.User>();
-        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"), default);
+        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"));
         userList.Add(expectedUser);
 
         _userRepositoryMock.Setup(x => x.SearchUsersAsync(email, name))
@@ -234,7 +230,7 @@ public class UserServiceTests
 
         const string email = "test@example.com";
         var userList = new List<Domain.Entities.User>();
-        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"), default);
+        var expectedUser = new Domain.Entities.User("Test", new Email(email), new Password("ValidPass1!"));
         userList.Add(expectedUser);
 
         _userRepositoryMock.Setup(x => x.SearchUsersAsync(email, default))
@@ -253,7 +249,7 @@ public class UserServiceTests
 
         const string name = "Test";
         var userList = new List<Domain.Entities.User>();
-        var expectedUser = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"), default);
+        var expectedUser = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"));
         userList.Add(expectedUser);
 
         _userRepositoryMock.Setup(x => x.SearchUsersAsync(default, name))

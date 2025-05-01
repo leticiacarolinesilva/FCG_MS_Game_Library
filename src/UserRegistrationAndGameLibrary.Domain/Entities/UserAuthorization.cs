@@ -23,4 +23,6 @@ public class UserAuthorization
         UserId = userId;
         Permission = permission;
     }
+
+    public AuthorizationPermissions ChangePermission(AuthorizationPermissions permission) => Permission = permission;
 }

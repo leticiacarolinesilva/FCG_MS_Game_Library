@@ -43,10 +43,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(u => u.GameLibrary)
             .WithOne(gl => gl.User)
             .HasForeignKey(gl => gl.UserId);
-
-        builder.Property(u => u.Permission)
-            .HasColumnName("permission")
-            .HasConversion<string>() 
-            .IsRequired();
     }
 }

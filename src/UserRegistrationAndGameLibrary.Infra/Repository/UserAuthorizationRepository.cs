@@ -29,6 +29,6 @@ public class UserAuthorizationRepository : IUserAuthorizationRepository
     public async Task<UserAuthorization?> GetByIdAsync(Guid id)
     {
         return await _context.UserAuthorizations
-            .FirstOrDefaultAsync(gl => gl.Id == id);
+            .FirstOrDefaultAsync(gl => gl.UserId == id);
     }
 }
