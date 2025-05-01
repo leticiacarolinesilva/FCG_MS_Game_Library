@@ -13,13 +13,16 @@ namespace UserRegistrationAndGameLibrary.Api.Extensions
         {
             services.AddTransient<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
 
-            services.AddScoped<IGameService, GameService>();
+            
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IUserAuthorizationRepository, UserAuthorizationRepository>();
             services.AddScoped<IGameLibraryRepository, GameLibraryRepository>();
+
+            services.AddScoped<IGameService, GameService>();
             services.AddScoped<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
 
             //var serviceProvider = services.BuildServiceProvider();
             //var logger = serviceProvider.GetService<ILogger<UserController>>();

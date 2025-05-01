@@ -12,15 +12,21 @@ public class UserService : IUserService
     private readonly IGameLibraryRepository _gameLibraryRepository;
     private readonly IUserRepository _userRepository;
     private readonly IGameRepository _gameRepository;
+    private readonly IUserAuthorizationRepository _userAuthorizationRepository;
 
-    public UserService(IGameLibraryRepository gameLibraryRepository, IUserRepository userRepository, IGameRepository gameRepository)
+    public UserService(
+        IGameLibraryRepository gameLibraryRepository, 
+        IUserRepository userRepository, 
+        IGameRepository gameRepository,
+        IUserAuthorizationRepository userAuthorizationRepository)
     {
         _gameLibraryRepository = gameLibraryRepository;
         _userRepository = userRepository;
         _gameRepository = gameRepository;
+        _userAuthorizationRepository = userAuthorizationRepository;
     }
     
-    public async Task<User> RegisterUserAsync(RegisterUserDto userDto)
+    public async Task<ResponseUserDto> RegisterUserAsync(RegisterUserDto userDto)
     {
         var existingUser = await _userRepository.GetByEmailAsync(userDto.Email);
         if (existingUser != null)
@@ -30,10 +36,21 @@ public class UserService : IUserService
         var emailVo = new Email(userDto.Email);
         var passwordVo = new Password(userDto.Password);
         
-        var user = new User(userDto.Name,emailVo, passwordVo, userDto.Permission);
+        var user = new User(userDto.Name,emailVo, passwordVo);
         await _userRepository.AddAsync(user);
-        
-        return user;
+
+        var userAuthorization = new UserAuthorization(user.Id, userDto.Permission);
+        await _userAuthorizationRepository.AddAsync(userAuthorization);
+
+        var userReponseDto = new ResponseUserDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            Permission = userDto.Permission.ToString(),
+        };
+
+        return userReponseDto;
     }
 
     public async Task<User?> GetUserByEmailAsync(string email)
@@ -72,12 +89,19 @@ public class UserService : IUserService
         {
             var response = new ResponseUserDto()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
+                Permission = user.Authorization.Permission.ToString(),
             };
             responseUserDto.Add(response);
         }
 
         return responseUserDto;
+    }
+
+    public async Task<User?> GetUserByIdAsync(Guid id)
+    {
+        return await _userRepository.GetByIdAsync(id);
     }
 }

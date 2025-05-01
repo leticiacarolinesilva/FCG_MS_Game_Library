@@ -30,7 +30,7 @@ public class RegisterUserDto
     public required string ConfirmationPassword { get; set; }
 
     /// <summary>
-    /// Permissions that the user has access to
+    /// Type permission by user
     /// </summary>
     [Required]
     public required AuthorizationPermissions Permission { get; set; }

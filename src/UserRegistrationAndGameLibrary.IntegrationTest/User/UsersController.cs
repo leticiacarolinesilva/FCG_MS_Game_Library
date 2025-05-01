@@ -34,7 +34,6 @@ public class UsersController : BaseIntegrationTests
 
         var location = response.Headers.Location;
         Assert.NotNull(location);
-
     }
 
     [Theory]
@@ -50,7 +49,6 @@ public class UsersController : BaseIntegrationTests
             Password = password,
             ConfirmationPassword = password,
             Permission = default
-
         };
 
         var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", invalidUser);
@@ -90,7 +88,7 @@ public class UsersController : BaseIntegrationTests
     }
 
     [Fact]
-    public async Task RegisterUser_WhenSendEmailAndName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    public async Task GetUser_WhenSendEmailAndName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
         var request = new RegisterUserDto
         {
@@ -116,7 +114,7 @@ public class UsersController : BaseIntegrationTests
     }
 
     [Fact]
-    public async Task RegisterUser_WhenSendOnlyEmail_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    public async Task GetUser_WhenSendOnlyEmail_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
         var request = new RegisterUserDto
         {
@@ -142,7 +140,7 @@ public class UsersController : BaseIntegrationTests
     }
 
     [Fact]
-    public async Task RegisterUser_WhenSendOnlyName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    public async Task GetUser_WhenSendOnlyName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
         var request = new RegisterUserDto
         {

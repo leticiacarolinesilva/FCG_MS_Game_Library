@@ -34,9 +34,9 @@ public class User
     public ICollection<GameLibrary> GameLibrary { get; private set; } = new List<GameLibrary>();
 
     /// <summary>
-    /// Permissions that the user has access to
+    ///  Authorization by user
     /// </summary>
-    public  AuthorizationPermissions Permission { get; private set; }
+    public UserAuthorization Authorization { get; private set; }
 
     /// <summary>
     /// Used for EF Core
@@ -49,15 +49,13 @@ public class User
     /// <param name="name">User's full name</param>
     /// <param name="email">User's email address will be used for authentication</param>
     /// <param name="password">Hashed password </param>
-    /// <param name="permissions">Hashed password </param>
-    public User(string name, Email email, Password password, AuthorizationPermissions permissions)
+    public User(string name, Email email, Password password)
     {
         Id = Guid.NewGuid();
         SetName(name);
         Email = email;
         Password = password;
         CreateAt = DateTime.UtcNow;
-        Permission = permissions;
     }
 
     /// <summary>
@@ -77,5 +75,10 @@ public class User
             throw new ArgumentException("User name is to long", nameof(name));
         }
         Name = name.Trim();
+    }
+
+    public void SetPermission(AuthorizationPermissions permissions)
+    {
+        Authorization = new UserAuthorization(Id, permissions);
     }
 }
