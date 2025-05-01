@@ -80,4 +80,9 @@ public class UserService : IUserService
 
         return responseUserDto;
     }
+
+    public async Task<User?> GetUserByIdAsync(Guid id)
+    {
+        return await _userRepository.GetByIdAsync(id);
+    }
 }

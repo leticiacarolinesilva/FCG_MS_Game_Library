@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using UserRegistrationAndGameLibrary.Domain.Entities;
 
 namespace UserRegistrationAndGameLibrary.Infra;
@@ -20,6 +21,7 @@ public class UserRegistrationDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Game> Games => Set<Game>();
     public DbSet<GameLibrary> GameLibraries => Set<GameLibrary>();
+    public DbSet<UserAuthorization> UserAuthorizations => Set<UserAuthorization>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,7 +46,13 @@ public class UserRegistrationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("uuid_generate_v4()");
         });
-        
+
+        modelBuilder.Entity<UserAuthorization>(entity =>
+        {
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("uuid_generate_v4()");
+        });
+
         base.OnModelCreating(modelBuilder);
     }
 }

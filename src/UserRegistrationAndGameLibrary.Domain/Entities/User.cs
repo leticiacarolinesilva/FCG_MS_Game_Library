@@ -34,9 +34,14 @@ public class User
     public ICollection<GameLibrary> GameLibrary { get; private set; } = new List<GameLibrary>();
 
     /// <summary>
+    ///  Authorization by user
+    /// </summary>
+    public UserAuthorization Authorization { get; private set; }
+
+    /// <summary>
     /// Permissions that the user has access to
     /// </summary>
-    public  AuthorizationPermissions Permission { get; private set; }
+    public AuthorizationPermissions Permission { get; private set; }
 
     /// <summary>
     /// Used for EF Core
