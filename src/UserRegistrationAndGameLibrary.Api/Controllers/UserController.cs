@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
-using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
-using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 using UserRegistrationAndGameLibrary.Api.Filters;
 using UserRegistrationAndGameLibrary.Domain.Enums;
 
@@ -16,14 +14,10 @@ namespace UserRegistrationAndGameLibrary.Api.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private ICorrelationIdGeneratorService _correlationIdGenerator;
     private readonly IUserService _uservice;
 
-    public UserController(
-        ICorrelationIdGeneratorService idGeneratorService,
-        IUserService uservice)
+    public UserController(IUserService uservice)
     {
-        _correlationIdGenerator = idGeneratorService;
         _uservice = uservice;
     }
 
