@@ -1,5 +1,3 @@
-using UserRegistrationAndGameLibrary.Api.Services;
-using UserRegistrationAndGameLibrary.Api.Services.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
@@ -11,16 +9,12 @@ namespace UserRegistrationAndGameLibrary.Api.Extensions
     {
         public static IServiceCollection UseServiceCollectionExtensions(this IServiceCollection services)
         {
-            services.AddTransient<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
-
-            
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IUserAuthorizationRepository, UserAuthorizationRepository>();
             services.AddScoped<IGameLibraryRepository, GameLibraryRepository>();
 
             services.AddScoped<IGameService, GameService>();
-            services.AddScoped<ICorrelationIdGeneratorService, CorrelationIdGeneratorService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
 
