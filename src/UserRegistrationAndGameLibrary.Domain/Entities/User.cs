@@ -1,3 +1,4 @@
+using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
 
 namespace UserRegistrationAndGameLibrary.Domain.Entities;
@@ -48,7 +49,6 @@ public class User
     /// <param name="name">User's full name</param>
     /// <param name="email">User's email address will be used for authentication</param>
     /// <param name="password">Hashed password </param>
-    /// <param name="permissions">Hashed password </param>
     public User(string name, Email email, Password password)
     {
         Id = Guid.NewGuid();
@@ -75,5 +75,10 @@ public class User
             throw new ArgumentException("User name is to long", nameof(name));
         }
         Name = name.Trim();
+    }
+
+    public void SetPermission(AuthorizationPermissions permissions)
+    {
+        Authorization = new UserAuthorization(Id, permissions);
     }
 }

@@ -33,7 +33,7 @@ public class UserController : ControllerBase
     /// <param name="request">ser registration data</param>
     /// <returns>The newly created user</returns>
     [HttpPost("register")]
-    [ProducesResponseType(typeof(User), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto request)
@@ -61,7 +61,7 @@ public class UserController : ControllerBase
     /// <param name="email">Email user</param>
     /// <returns>User properties</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<ResponseUserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
     public async Task<IActionResult> GetUser([FromQuery] string? email, string? name)

@@ -26,7 +26,7 @@ public class UserService : IUserService
         _userAuthorizationRepository = userAuthorizationRepository;
     }
     
-    public async Task<User> RegisterUserAsync(RegisterUserDto userDto)
+    public async Task<ResponseUserDto> RegisterUserAsync(RegisterUserDto userDto)
     {
         var existingUser = await _userRepository.GetByEmailAsync(userDto.Email);
         if (existingUser != null)
@@ -42,7 +42,15 @@ public class UserService : IUserService
         var userAuthorization = new UserAuthorization(user.Id, userDto.Permission);
         await _userAuthorizationRepository.AddAsync(userAuthorization);
 
-        return user;
+        var userReponseDto = new ResponseUserDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            Permission = userDto.Permission.ToString(),
+        };
+
+        return userReponseDto;
     }
 
     public async Task<User?> GetUserByEmailAsync(string email)
@@ -81,8 +89,10 @@ public class UserService : IUserService
         {
             var response = new ResponseUserDto()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
+                Permission = user.Authorization.Permission.ToString(),
             };
             responseUserDto.Add(response);
         }

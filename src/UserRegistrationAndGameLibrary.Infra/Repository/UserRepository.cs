@@ -45,6 +45,7 @@ public class UserRepository : IUserRepository
     {
         var query = _context.Users
             .Include(u => u.GameLibrary)
+            .Include(u => u.Authorization)
             .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(name))

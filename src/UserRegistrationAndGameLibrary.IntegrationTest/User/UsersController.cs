@@ -24,7 +24,8 @@ public class UsersController : BaseIntegrationTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!"
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
         };
 
         var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -33,7 +34,6 @@ public class UsersController : BaseIntegrationTests
 
         var location = response.Headers.Location;
         Assert.NotNull(location);
-
     }
 
     [Theory]
@@ -47,7 +47,8 @@ public class UsersController : BaseIntegrationTests
             Name = name,
             Email = email,
             Password = password,
-            ConfirmationPassword = password
+            ConfirmationPassword = password,
+            Permission = default
         };
 
         var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", invalidUser);
@@ -61,7 +62,8 @@ public class UsersController : BaseIntegrationTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!"
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
         };
 
         await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -86,14 +88,15 @@ public class UsersController : BaseIntegrationTests
     }
 
     [Fact]
-    public async Task RegisterUser_WhenSendEmailAndName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    public async Task GetUser_WhenSendEmailAndName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
         var request = new RegisterUserDto
         {
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!"
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
         };
 
         var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -111,14 +114,15 @@ public class UsersController : BaseIntegrationTests
     }
 
     [Fact]
-    public async Task RegisterUser_WhenSendOnlyEmail_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    public async Task GetUser_WhenSendOnlyEmail_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
         var request = new RegisterUserDto
         {
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!"
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
         };
 
         var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -136,14 +140,15 @@ public class UsersController : BaseIntegrationTests
     }
 
     [Fact]
-    public async Task RegisterUser_WhenSendOnlyName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    public async Task GetUser_WhenSendOnlyName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
     {
         var request = new RegisterUserDto
         {
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!"
+            ConfirmationPassword = "ValidPass1!",
+            Permission = default
         };
 
         var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
