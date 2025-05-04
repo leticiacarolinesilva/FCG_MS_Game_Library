@@ -27,7 +27,7 @@ public class ExceptionHandlingMiddleware
             var errorResponse = new
             {
                 message = "An unexpected error occurred. Please try again later.",
-                details = ex.Message // Remova isso em produção, se não quiser mostrar detalhes
+                details = ex.Message
             };
 
             await context.Response.WriteAsJsonAsync(errorResponse);

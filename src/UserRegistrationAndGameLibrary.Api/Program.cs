@@ -18,7 +18,7 @@ builder.Services.AddDbContext<UserRegistrationDbContext>(options =>
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.UseServiceCollectionExtensions();
+builder.Services.UseCollectionExtensions();
 
 builder.Services.AddAuthentication(options =>
 {

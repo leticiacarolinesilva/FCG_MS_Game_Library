@@ -5,9 +5,9 @@ using UserRegistrationAndGameLibrary.Infra.Repository;
 
 namespace UserRegistrationAndGameLibrary.Api.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class CollectionExtensions
     {
-        public static IServiceCollection UseServiceCollectionExtensions(this IServiceCollection services)
+        public static IServiceCollection UseCollectionExtensions(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
@@ -17,10 +17,6 @@ namespace UserRegistrationAndGameLibrary.Api.Extensions
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
-
-            //var serviceProvider = services.BuildServiceProvider();
-            //var logger = serviceProvider.GetService<ILogger<UserController>>();
-            //services.AddSingleton(typeof(ILogger), logger ?? throw new InvalidOperationException(nameof(logger)));
 
             return services;
         }
