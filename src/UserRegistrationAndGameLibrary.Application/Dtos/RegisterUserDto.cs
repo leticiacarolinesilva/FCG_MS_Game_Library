@@ -28,10 +28,4 @@ public class RegisterUserDto
     [Required]
     [Compare("Password")]
     public required string ConfirmationPassword { get; set; }
-
-    /// <summary>
-    /// Type permission by user
-    /// </summary>
-    [Required]
-    public required AuthorizationPermissions Permission { get; set; }
 }

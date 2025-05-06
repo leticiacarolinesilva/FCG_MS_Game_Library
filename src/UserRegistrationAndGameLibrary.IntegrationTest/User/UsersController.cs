@@ -24,8 +24,7 @@ public class UsersController : BaseIntegrationTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = default
+            ConfirmationPassword = "ValidPass1!"
         };
 
         var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -47,8 +46,7 @@ public class UsersController : BaseIntegrationTests
             Name = name,
             Email = email,
             Password = password,
-            ConfirmationPassword = password,
-            Permission = default
+            ConfirmationPassword = password
         };
 
         var response = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", invalidUser);
@@ -62,8 +60,7 @@ public class UsersController : BaseIntegrationTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = default
+            ConfirmationPassword = "ValidPass1!"
         };
 
         await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -95,8 +92,7 @@ public class UsersController : BaseIntegrationTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = default
+            ConfirmationPassword = "ValidPass1!"
         };
 
         var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -121,8 +117,7 @@ public class UsersController : BaseIntegrationTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = default
+            ConfirmationPassword = "ValidPass1!"
         };
 
         var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
@@ -147,8 +142,7 @@ public class UsersController : BaseIntegrationTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = default
+            ConfirmationPassword = "ValidPass1!"
         };
 
         var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);

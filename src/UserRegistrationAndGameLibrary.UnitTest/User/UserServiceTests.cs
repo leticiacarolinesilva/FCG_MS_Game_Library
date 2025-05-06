@@ -39,8 +39,7 @@ public class UserServiceTests
             Name = "Test User",
             Email = "test@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = default
+            ConfirmationPassword = "ValidPass1!"
         };
 
         _userRepositoryMock.Setup(x => x.GetByEmailAsync(dto.Email))
@@ -69,8 +68,7 @@ public class UserServiceTests
             Name = "Test User",
             Email = "existing@example.com",
             Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!",
-            Permission = default
+            ConfirmationPassword = "ValidPass1!"
         };
 
         var existingUser = new Domain.Entities.User("Existing", new Email(dto.Email), new Password(dto.Password));

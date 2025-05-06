@@ -1,6 +1,7 @@
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
+using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.ValueObjects;
@@ -15,8 +16,8 @@ public class UserService : IUserService
     private readonly IUserAuthorizationRepository _userAuthorizationRepository;
 
     public UserService(
-        IGameLibraryRepository gameLibraryRepository, 
-        IUserRepository userRepository, 
+        IGameLibraryRepository gameLibraryRepository,
+        IUserRepository userRepository,
         IGameRepository gameRepository,
         IUserAuthorizationRepository userAuthorizationRepository)
     {
@@ -25,7 +26,7 @@ public class UserService : IUserService
         _gameRepository = gameRepository;
         _userAuthorizationRepository = userAuthorizationRepository;
     }
-    
+
     public async Task<ResponseUserDto> RegisterUserAsync(RegisterUserDto userDto)
     {
         var existingUser = await _userRepository.GetByEmailAsync(userDto.Email);
@@ -35,11 +36,11 @@ public class UserService : IUserService
         }
         var emailVo = new Email(userDto.Email);
         var passwordVo = new Password(userDto.Password);
-        
-        var user = new User(userDto.Name,emailVo, passwordVo);
+
+        var user = new User(userDto.Name, emailVo, passwordVo);
         await _userRepository.AddAsync(user);
 
-        var userAuthorization = new UserAuthorization(user.Id, userDto.Permission);
+        var userAuthorization = new UserAuthorization(user.Id, AuthorizationPermissions.User);
         await _userAuthorizationRepository.AddAsync(userAuthorization);
 
         var userReponseDto = new ResponseUserDto
@@ -47,7 +48,7 @@ public class UserService : IUserService
             Id = user.Id,
             Email = user.Email,
             Name = user.Name,
-            Permission = userDto.Permission.ToString(),
+            Permission = AuthorizationPermissions.User.ToString(),
         };
 
         return userReponseDto;
@@ -61,13 +62,13 @@ public class UserService : IUserService
 
     public async Task<GameLibrary> AddGameToLibraryAsync(Guid userId, Guid gameId)
     {
-        var user = await _userRepository.GetByIdAsync(userId) 
+        var user = await _userRepository.GetByIdAsync(userId)
                    ?? throw new DomainException("User not found");
-    
-        var game = await _gameRepository.GetByIdAsync(gameId) 
+
+        var game = await _gameRepository.GetByIdAsync(gameId)
                    ?? throw new DomainException("Game not found");
 
-  
+
         var existingEntries = await _gameLibraryRepository.GetByUserIdAsync(userId);
         if (existingEntries.Any(gl => gl.GameId == gameId))
         {
@@ -98,6 +99,42 @@ public class UserService : IUserService
         }
 
         return responseUserDto;
+    }
+
+    public async Task<ResponseUserDto?> UpdateAsync(UpdateUserDto userDto)
+    {
+        if (userDto == null)
+            return null;
+
+        var userResponse = await GetUserByIdAsync(userDto.UserId);
+
+        if (userResponse == null)
+            return null;
+
+        userResponse.SetName(userDto.Name);
+
+        await _userRepository.UpdateAsync(userResponse);
+
+        var updatedUser = await GetUserByIdAsync(userResponse.Id);
+
+        var response = new ResponseUserDto
+        {
+            Id= updatedUser.Id,
+            Email = updatedUser.Email,
+            Name = updatedUser.Name
+        };
+
+        return response;
+    }
+
+    public async Task DeleteAsync(Guid userId)
+    {
+        var user = await GetUserByIdAsync(userId);
+
+        if (user == null)
+            return;
+
+        await _userRepository.DeleteAsync(user);
     }
 
     public async Task<User?> GetUserByIdAsync(Guid id)

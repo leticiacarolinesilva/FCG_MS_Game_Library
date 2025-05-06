@@ -29,7 +29,6 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType(typeof(ResponseUserDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto request)
     {
         try
@@ -68,5 +67,37 @@ public class UserController : ControllerBase
         }
 
         return Ok(response);
+    }
+
+    /// <summary>
+    /// Update user
+    /// </summary>
+    /// <param name="userDto">Dto for update user</param>
+    /// <returns>User properties</returns>
+    [HttpPut]
+    [ProducesResponseType(typeof(List<ResponseUserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto userDto)
+    {
+        var response = await _uservice.UpdateAsync(userDto);
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Delete user by Id
+    /// </summary>
+    /// <param name="userId">User Id</param>
+    /// <returns>User properties</returns>
+    [HttpDelete]
+    [ProducesResponseType(typeof(List<ResponseUserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
+    public async Task<IActionResult> UpdateUser([FromQuery] Guid userId)
+    {
+        await _uservice.DeleteAsync(userId);
+
+        return NoContent();
     }
 }

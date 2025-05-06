@@ -41,6 +41,12 @@ public class UserRepository : IUserRepository
         
     }
 
+    public async Task DeleteAsync(User user)
+    {
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<List<User>> SearchUsersAsync(string? email, string? name)
     {
         var query = _context.Users

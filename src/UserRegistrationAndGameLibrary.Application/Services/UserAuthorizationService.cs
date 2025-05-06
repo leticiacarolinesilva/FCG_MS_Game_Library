@@ -29,7 +29,7 @@ public class UserAuthorizationService : IUserAuthorizationService
         _userAuthorizationRepository = userAuthorizationRepository;
     }
 
-    public async Task<string> GetToken(UserDto request)
+    public async Task<string> GetToken(AuthorizationTokenDto request)
     {
         try
         {
