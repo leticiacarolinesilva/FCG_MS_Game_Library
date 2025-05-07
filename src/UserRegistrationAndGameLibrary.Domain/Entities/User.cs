@@ -77,6 +77,12 @@ public class User
         Name = name.Trim();
     }
 
+    public void SetEmail(string email)
+    {
+       var validate = new Email(email);
+        Email = validate.Value.Trim();
+    }
+
     public void SetPermission(AuthorizationPermissions permissions)
     {
         Authorization = new UserAuthorization(Id, permissions);

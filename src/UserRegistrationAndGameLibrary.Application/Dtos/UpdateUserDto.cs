@@ -14,5 +14,5 @@ public class UpdateUserDto
     /// <summary>
     /// User's email address will be used for authentication
     /// </summary>
-    public required string Email { get; set; }
+    public string Email { get; set; }
 }

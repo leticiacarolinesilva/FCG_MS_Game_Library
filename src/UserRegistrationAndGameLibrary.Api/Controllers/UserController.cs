@@ -94,7 +94,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(List<ResponseUserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
-    public async Task<IActionResult> UpdateUser([FromQuery] Guid userId)
+    public async Task<IActionResult> DeleteUser([FromQuery] Guid userId)
     {
         await _uservice.DeleteAsync(userId);
 

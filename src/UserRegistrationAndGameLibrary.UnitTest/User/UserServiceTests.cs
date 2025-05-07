@@ -288,4 +288,109 @@ public class UserServiceTests
         // Assert
         Assert.True(result.Count == 0);
     }
+    [Fact]
+    public async Task UpdateAsync_ShouldReturnError_WhenDtoIsNull()
+    {
+        // Act
+        var result = await _userService.UpdateAsync(null);
+
+        // Assert
+        Assert.Equal("Request invalid is not allowed to be null", result);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ShouldReturnError_WhenUserNotFound()
+    {
+        // Arrange
+        var dto = new UpdateUserDto { UserId = Guid.NewGuid(), Name = "Teste", Email = "teste@email.com" };
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(dto.UserId))
+            .ReturnsAsync((Domain.Entities.User)null);
+
+        // Act
+        var result = await _userService.UpdateAsync(dto);
+
+        // Assert
+        Assert.Equal("UserId does not exist", result);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ShouldReturnError_WhenEmailAlreadyExists()
+    {
+        // Arrange
+        var dto = new UpdateUserDto { UserId = Guid.NewGuid(), Name = "Novo", Email = "existe@email.com" };
+        var existingUser = new Domain.Entities.User("Usuário", new Email("existe@email.com"), new Password("Senha123!"));
+
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(dto.UserId))
+            .ReturnsAsync(existingUser);
+
+        _userRepositoryMock.Setup(r => r.SearchUsersAsync(dto.Email, null))
+            .ReturnsAsync(new List<Domain.Entities.User> { new Domain.Entities.User("Outro", new Email("existe@email.com"), new Password("Senha456!")) });
+
+        // Act
+        var result = await _userService.UpdateAsync(dto);
+
+        // Assert
+        Assert.Equal("Email indicated already exists in the database", result);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ShouldUpdateSuccessfully()
+    {
+        // Arrange
+        var dto = new UpdateUserDto { UserId = Guid.NewGuid(), Name = "Teste Atualizada", Email = "teste@email.com" };
+        var existingUser = new Domain.Entities.User("Le", new Email("Teste@antigo.com"), new Password("Senha123!"));
+
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(dto.UserId))
+            .ReturnsAsync(existingUser);
+
+        _userRepositoryMock.Setup(r => r.SearchUsersAsync(dto.Email, null))
+            .ReturnsAsync(new List<Domain.Entities.User>()); // email não existe
+
+        _userRepositoryMock.Setup(r => r.UpdateAsync(It.IsAny<Domain.Entities.User>()))
+            .Returns(Task.CompletedTask);
+
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(existingUser.Id))
+            .ReturnsAsync(existingUser); // opcional
+
+        // Act
+        var result = await _userService.UpdateAsync(dto);
+
+        // Assert
+        Assert.Equal("Usuario Atualizado com sucesso", result);
+        Assert.Equal("Teste Atualizada", existingUser.Name);
+        Assert.Equal("teste@email.com", existingUser.Email);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_ShouldCallRepository_WhenUserExists()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new Domain.Entities.User("Letícia", new Email("le@email.com"), new Password("Senha123!"));
+
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId))
+            .ReturnsAsync(user);
+
+        // Act
+        await _userService.DeleteAsync(userId);
+
+        // Assert
+        _userRepositoryMock.Verify(r => r.DeleteAsync(user), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_ShouldNotCallRepository_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId))
+            .ReturnsAsync((Domain.Entities.User)null!);
+
+        // Act
+        await _userService.DeleteAsync(userId);
+
+        // Assert
+        _userRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<Domain.Entities.User>()), Times.Never);
+    }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -135,27 +136,89 @@ public class UsersController : BaseIntegrationTests
     }
 
     [Fact]
-    public async Task GetUser_WhenSendOnlyName_ShouldReturnBadRequest_WhenThereIsAlreadyUser()
+    public async Task UpdateUser_ShouldUpdateSuccessfully_WhenUserExists()
     {
-        var request = new RegisterUserDto
+        // Arrange
+        var registerDto = new RegisterUserDto
         {
-            Name = "Test User",
-            Email = "test@example.com",
-            Password = "ValidPass1!",
-            ConfirmationPassword = "ValidPass1!"
+            Name = "Letícia Original",
+            Email = "leticia.original@email.com",
+            Password = "Senha123!",
+            ConfirmationPassword = "Senha123!"
         };
 
-        var responseCreation = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", request);
+        var createResponse = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", registerDto);
+        createResponse.EnsureSuccessStatusCode();
 
-        var response = await HttpClient.GetAsync($"{BaseUrl}?name={request.Name}");
+        // Busca o usuário criado para pegar o Id
+        var getResponse = await HttpClient.GetAsync($"{BaseUrl}?email={registerDto.Email}");
+        getResponse.EnsureSuccessStatusCode();
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(HttpStatusCode.Created, responseCreation.StatusCode);
+        var getContent = await getResponse.Content.ReadAsStringAsync();
+        var users = JsonConvert.DeserializeObject<List<ResponseUserDto>>(getContent);
+        var user = users.FirstOrDefault();
 
-        var content = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(user);
 
-        var users = JsonConvert.DeserializeObject<List<ResponseUserDto>>(content);
+        // Act: atualiza o nome e email
+        var updateDto = new UpdateUserDto
+        {
+            UserId = user.Id,
+            Name = "Letícia Atualizada",
+            Email = "leticia.atualizada@email.com"
+        };
 
-        Assert.Contains(users, x => x.Name == request.Name && x.Email == request.Email);
+        var updateResponse = await HttpClient.PutAsJsonAsync(BaseUrl, updateDto);
+
+        // Assert: verifica se atualizou com sucesso
+        Assert.Equal(HttpStatusCode.OK, updateResponse.StatusCode);
+
+        var updatedCheck = await HttpClient.GetAsync($"{BaseUrl}?email={updateDto.Email}");
+        updatedCheck.EnsureSuccessStatusCode();
+
+        var updatedContent = await updatedCheck.Content.ReadAsStringAsync();
+        var updatedUsers = JsonConvert.DeserializeObject<List<ResponseUserDto>>(updatedContent);
+
+        var updatedUser = updatedUsers.FirstOrDefault();
+        Assert.NotNull(updatedUser);
+        Assert.Equal(updateDto.Name, updatedUser.Name);
+        Assert.Equal(updateDto.Email, updatedUser.Email);
+    }
+
+    [Fact]
+    public async Task DeleteUser_ShouldRemoveUser_WhenUserExists()
+    {
+        // Arrange – cria um usuário
+        var registerDto = new RegisterUserDto
+        {
+            Name = "Usuário Deletável",
+            Email = "deletar@email.com",
+            Password = "Senha123!",
+            ConfirmationPassword = "Senha123!"
+        };
+
+        var createResponse = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", registerDto);
+        createResponse.EnsureSuccessStatusCode();
+
+        // Busca o usuário para pegar o ID
+        var getResponse = await HttpClient.GetAsync($"{BaseUrl}?email={registerDto.Email}");
+        getResponse.EnsureSuccessStatusCode();
+
+        var getContent = await getResponse.Content.ReadAsStringAsync();
+        var users = JsonConvert.DeserializeObject<List<ResponseUserDto>>(getContent);
+        var user = users.FirstOrDefault();
+
+        Assert.NotNull(user);
+
+        // Act – envia o DELETE com userId na query
+        var deleteResponse = await HttpClient.DeleteAsync($"{BaseUrl}?userId={user.Id}");
+
+        // Assert – espera NoContent (204)
+        Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
+
+        // Verifica se usuário foi realmente deletado
+        var verifyResponse = await HttpClient.GetAsync($"{BaseUrl}?email={registerDto.Email}");
+
+        Assert.Equal(HttpStatusCode.NotFound, verifyResponse.StatusCode);
     }
 }

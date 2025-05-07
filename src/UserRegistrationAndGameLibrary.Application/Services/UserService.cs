@@ -101,30 +101,30 @@ public class UserService : IUserService
         return responseUserDto;
     }
 
-    public async Task<ResponseUserDto?> UpdateAsync(UpdateUserDto userDto)
+    public async Task<string?> UpdateAsync(UpdateUserDto userDto)
     {
         if (userDto == null)
-            return null;
+            return "Request invalid is not allowed to be null";
 
         var userResponse = await GetUserByIdAsync(userDto.UserId);
 
         if (userResponse == null)
-            return null;
+            return "UserId does not exist";
+
+        var isEmailExist = await _userRepository.SearchUsersAsync(userDto.Email, name: null);
+
+        if (isEmailExist.Count > 0) return "Email indicated already exists in the database";
 
         userResponse.SetName(userDto.Name);
+
+        if(userDto.Email != null)
+            userResponse.SetEmail(userDto.Email);
 
         await _userRepository.UpdateAsync(userResponse);
 
         var updatedUser = await GetUserByIdAsync(userResponse.Id);
 
-        var response = new ResponseUserDto
-        {
-            Id= updatedUser.Id,
-            Email = updatedUser.Email,
-            Name = updatedUser.Name
-        };
-
-        return response;
+        return "Usuario Atualizado com sucesso";
     }
 
     public async Task DeleteAsync(Guid userId)

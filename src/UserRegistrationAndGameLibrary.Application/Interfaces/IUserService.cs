@@ -10,6 +10,6 @@ public interface IUserService
     Task<GameLibrary> AddGameToLibraryAsync(Guid userId, Guid gameId);
     Task<List<ResponseUserDto>> SearchUsersAsync(string email, string name);
     Task<User?> GetUserByIdAsync(Guid id);
-    Task<ResponseUserDto?> UpdateAsync(UpdateUserDto user);
+    Task<string> UpdateAsync(UpdateUserDto user);
     Task DeleteAsync(Guid userId);
 }
