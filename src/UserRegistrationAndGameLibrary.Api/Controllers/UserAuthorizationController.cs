@@ -28,7 +28,7 @@ public class UserAuthorizationController : ControllerBase
     /// <param name="request">user data</param>
     /// <returns>Token JWT</returns>
     [HttpPost("token")]
-    public async Task<IActionResult> GetToken([FromBody] UserDto request)
+    public async Task<IActionResult> GetToken([FromBody] AuthorizationTokenDto request)
     {
         try
         {
