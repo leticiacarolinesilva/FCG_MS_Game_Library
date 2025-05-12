@@ -49,7 +49,7 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Get user by email
+    /// Get user by email, requires an Admin token
     /// </summary>
     /// <param name="email">Email user</param>
     /// <returns>User properties</returns>
@@ -70,7 +70,7 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Update user
+    /// Update user , requires an Admin or User token
     /// </summary>
     /// <param name="userDto">Dto for update user</param>
     /// <returns>User properties</returns>
@@ -86,7 +86,7 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Delete user by Id
+    /// Delete user by Id, requires an Admin token
     /// </summary>
     /// <param name="userId">User Id</param>
     /// <returns>User properties</returns>

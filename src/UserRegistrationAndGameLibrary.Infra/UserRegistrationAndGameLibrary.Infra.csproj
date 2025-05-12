@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\UserRegistrationAndGameLibrary.Application\UserRegistrationAndGameLibrary.Application.csproj" />
       <ProjectReference Include="..\UserRegistrationAndGameLibrary.Domain\UserRegistrationAndGameLibrary.Domain.csproj" />
     </ItemGroup>
 

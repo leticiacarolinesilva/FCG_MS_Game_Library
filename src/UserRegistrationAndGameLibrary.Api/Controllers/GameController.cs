@@ -20,7 +20,7 @@ public class GameController : ControllerBase
     }
 
     /// <summary>
-    /// Get all available games
+    /// Get all available games, requires an Admin or User token
     /// </summary>
     /// <returns>List of all games</returns>
     [HttpGet]
@@ -44,7 +44,7 @@ public class GameController : ControllerBase
     }
     
     /// <summary>
-    /// Get game by ID
+    /// Get game by ID, requires an Admin or User token 
     /// </summary>
     /// <param name="id"></param>
     /// <returns>An specific game</returns>
@@ -75,7 +75,7 @@ public class GameController : ControllerBase
     }
     
     /// <summary>
-    /// Get games by genre
+    /// Get games by genre, requires an Admin or User token
     /// </summary>
     /// <param name="genre"></param>
     /// <returns></returns>
@@ -105,7 +105,7 @@ public class GameController : ControllerBase
     }    
     
     /// <summary>
-    /// Create a new game
+    /// Create a new game, requires an Admin token
     /// </summary>
     /// <param name="dto">Use's a CreateGameDto class</param>
     /// <returns>A new game created</returns>
@@ -151,7 +151,7 @@ public class GameController : ControllerBase
     }
 
     /// <summary>
-    /// Update an existing game
+    /// Update an existing game, requires an Admin token
     /// </summary>
     /// <param name="id">gameid</param>
     /// <param name="dto">Use's a CreateGameDto class</param>
@@ -187,7 +187,7 @@ public class GameController : ControllerBase
     }
     
     /// <summary>
-    ///  Delete a game
+    ///  Delete a game, requires an Admin token
     /// </summary>
     /// <param name="id">GameId</param>
     /// <returns>A game was deleted</returns>

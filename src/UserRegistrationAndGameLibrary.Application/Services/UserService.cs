@@ -75,7 +75,7 @@ public class UserService : IUserService
             throw new DomainException("User already owns this game");
         }
 
-        var gameLibrary = new GameLibrary(user, game, game.Price);
+        var gameLibrary = new GameLibrary(user.Id, game.Id, game.Price);
         await _gameLibraryRepository.AddAsync(gameLibrary);
         return gameLibrary;
     }

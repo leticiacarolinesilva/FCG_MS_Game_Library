@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
 
@@ -14,12 +15,12 @@ public class GameLibraryRepository : IGameLibraryRepository
         _context = context;
     }
 
-    public async Task<GameLibrary?> GetByIdAsync(Guid id)
+    public async Task<GameLibrary?> GetByUserIdAndGameIdAsync(Guid userId, Guid gameId)
     {
         return await _context.GameLibraries
             .Include(gl => gl.Game)
             .Include(gl => gl.User)
-            .FirstOrDefaultAsync(gl => gl.Id == id);
+            .FirstOrDefaultAsync(gl => gl.UserId == userId && gl.GameId == gameId);
     }
 
     public async Task<IEnumerable<GameLibrary>> GetByUserIdAsync(Guid userId)
@@ -49,9 +50,18 @@ public class GameLibraryRepository : IGameLibraryRepository
 
     public async Task<GameLibrary> AddAsync(GameLibrary gameLibrary)
     {
-        await _context.GameLibraries.AddAsync(gameLibrary);
-        await _context.SaveChangesAsync();
-        return gameLibrary;
+        try
+        {
+            await _context.GameLibraries.AddAsync(gameLibrary);
+            await _context.SaveChangesAsync();
+            return gameLibrary;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 
     public async Task UpdateAsync(GameLibrary gameLibrary)
