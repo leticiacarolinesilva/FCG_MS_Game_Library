@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using UserRegistrationAndGameLibrary.Api.Filters;
 using UserRegistrationAndGameLibrary.Application.Dtos;
+using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
@@ -15,15 +16,15 @@ namespace UserRegistrationAndGameLibrary.Api.Controllers;
 [Route("api/users/{userId}/library")]
 public class GameLibraryController: ControllerBase
 {
-    private readonly GameLibraryService _gameLibraryService;
+    private readonly IGameLibraryService _gameLibraryService;
 
-    public GameLibraryController(GameLibraryService gameLibraryService)
+    public GameLibraryController(IGameLibraryService gameLibraryService)
     {
         _gameLibraryService = gameLibraryService;
     }
 
     /// <summary>
-    /// Get all games in user's library
+    /// Get all games in user's library, requires an Admin Token
     /// </summary>
     /// <param name="userId">UserId</param>
     /// <returns>A Game tha matches the UserId and GameId</returns>
@@ -49,18 +50,18 @@ public class GameLibraryController: ControllerBase
     }
 
     /// <summary>
-    /// Get specific Game Library entry
+    /// Get specific Game Library entry, requires an Admin or User Token
     /// </summary>
     /// <param name="userId">User Id</param>
-    /// <param name="entryId">User's information from Game Library database</param>
+    /// <param name="gameId">User's information from Game Library database</param>
     /// <returns>Game library data for the userId and entryId</returns>
-    [HttpGet("{entryId}")]
+    [HttpGet("{gameId}")]
     [ProducesResponseType(typeof(GameLibraryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(404)]
     [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
-    public async Task<IActionResult> GetGameLibrary(Guid userId, Guid entryId)
+    public async Task<IActionResult> GetGameLibrary(Guid userId, Guid gameId)
     {
-        var libraryData = await _gameLibraryService.GetLibraryEntryAsync(entryId, userId);
+        var libraryData = await _gameLibraryService.GetLibraryEntryAsync(userId, gameId);
         if (libraryData == null)
         {
             return NotFound();
@@ -81,7 +82,7 @@ public class GameLibraryController: ControllerBase
     }    
 
     /// <summary>
-    /// Add a game to user's library
+    /// Add a game to user's library, requires an Admin or User Token
     /// </summary>
     /// <param name="userId">UserId</param>
     /// <param name="gameId">GameId</param>
@@ -117,28 +118,28 @@ public class GameLibraryController: ControllerBase
     }
 
     /// <summary>
-    /// Update game installation status
+    /// Update game installation status, requires an Admin or User Token
     /// </summary>
     /// <param name="userId">UserId</param>
-    /// <param name="entryId">User's information from Game Library database</param>
+    /// <param name="gameId">GameId register for a specific user from Game Library database</param>
     /// <param name="installationStatus">true = installed, false = no installed</param>
     /// <returns></returns>
-    [HttpPatch("{entryId}/installation")]
+    [HttpPatch("{gameId}/installation")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
-    public async Task<IActionResult> UpdateInstallationStatus(Guid userId, Guid entryId, bool installationStatus)
+    public async Task<IActionResult> UpdateInstallationStatus(Guid userId, Guid gameId, bool installationStatus)
     {
         try
         {
             if (installationStatus)
             {
-                await _gameLibraryService.MarkAsInstalledAsync(userId, entryId);
+                await _gameLibraryService.MarkAsInstalledAsync(userId, gameId);
             }
             else
             {
-                await _gameLibraryService.MarkAsUninstalledAsync(userId, entryId);
+                await _gameLibraryService.MarkAsUninstalledAsync(userId, gameId);
             }
             return NoContent();
         }
@@ -147,17 +148,22 @@ public class GameLibraryController: ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    
+    /// <summary>
+    /// Delete a record from Game Library database by userid and gameid, requires an Admin Token
+    /// </summary>
+    /// <param name="userId">UserId</param>
+    /// <param name="gameId">GameId register for a specific user from Game Library database</param>
+    /// <returns>A no content response</returns>
     [HttpDelete("{entryId}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
-    public async Task<IActionResult> RemoveFromLibrary(Guid userId, Guid entryId)
+    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
+    public async Task<IActionResult> RemoveFromLibrary(Guid userId, Guid gameId)
     {
         try
         {
-            await _gameLibraryService.RemoveFromLibraryAsync(entryId, userId);
+            await _gameLibraryService.RemoveFromLibraryAsync( userId, gameId);
             return NoContent();
         }
         catch (Exception ex)

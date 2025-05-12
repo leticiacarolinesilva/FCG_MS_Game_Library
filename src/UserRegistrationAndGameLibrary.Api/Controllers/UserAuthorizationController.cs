@@ -48,7 +48,7 @@ public class UserAuthorizationController : ControllerBase
     }
 
     /// <summary>
-    /// Assign authorization to user
+    /// Assign authorization to user, requires an Admin token
     /// </summary>
     /// <param name="request">Autorization data</param>
     /// <returns>Status code created</returns>
@@ -69,7 +69,7 @@ public class UserAuthorizationController : ControllerBase
     }
 
     /// <summary>
-    /// update authorization to user
+    /// update authorization to user, requires an Admin token
     /// </summary>
     /// <param name="request">Autorization data</param>
     /// <returns>Status code created</returns>

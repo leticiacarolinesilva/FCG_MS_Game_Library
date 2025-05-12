@@ -39,13 +39,11 @@ public class GameLibrary
     /// <param name="user">User who owns the game</param>
     /// <param name="game">Game that is owned</param>
     /// <param name="purchasePrice">Price at which the game was purchased</param>
-    public GameLibrary(User user, Game game,decimal purchasePrice)
+    public GameLibrary(Guid userId, Guid gameId,decimal purchasePrice)
     {
         Id = Guid.NewGuid();
-        UserId = user.Id;
-        User = user;
-        GameId = game.Id;
-        Game = game;
+        UserId = userId;
+        GameId = gameId;
         PurchaseDate = DateTime.UtcNow;
         PurchasePrice = purchasePrice;
         IsInstalled = false;

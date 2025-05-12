@@ -194,7 +194,7 @@ public class UserServiceTests
             GameGenre.RPG,
             "https://example.com/test.jpg");
 
-        var existingEntry = new GameLibrary(user, game, game.Price);
+        var existingEntry = new GameLibrary(user.Id, game.Id, game.Price);
 
         _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(user);

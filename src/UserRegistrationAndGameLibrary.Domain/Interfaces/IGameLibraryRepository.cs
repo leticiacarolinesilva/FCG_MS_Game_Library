@@ -4,7 +4,7 @@ namespace UserRegistrationAndGameLibrary.Domain.Interfaces;
 
 public interface IGameLibraryRepository
 {
-    Task<GameLibrary?> GetByIdAsync(Guid id);
+    Task<GameLibrary?> GetByUserIdAndGameIdAsync(Guid userId, Guid gameId);
     Task<IEnumerable<GameLibrary>> GetByUserIdAsync(Guid userId);
     Task<IEnumerable<GameLibrary>> GetInstalledGamesAsync(Guid userId);
     Task<bool> UserOwnsGameAsync(Guid userId, Guid gameId);
