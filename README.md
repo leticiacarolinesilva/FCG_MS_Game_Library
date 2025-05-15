@@ -1,72 +1,72 @@
-# ?? FIAP Cloud Games - API de Cadastro e Biblioteca de Jogos
+# FIAP Cloud Games - API de Cadastro e Biblioteca de Jogos
 
-Este projeto È a entrega da **Fase 1** do Tech Challenge da FIAP e consiste em uma **API RESTful desenvolvida em
-.NET 8** para gerenciar o **cadastro de usu·rios** e sua **biblioteca de jogos adquiridos**.
-Essa API È o ponto de partida para uma plataforma robusta de games voltada ‡ educaÁ„o em tecnologia.
-
----
-
-## ?? Objetivo
-
-Criar um MVP funcional, utilizando arquitetura limpa, boas pr·ticas de desenvolvimento, persistÍncia de dados com Entity Framework Core 
-e autenticaÁ„o com JWT, que sirva como base sÛlida para as prÛximas fases do projeto.
+Este projeto √© a entrega da **Fase 1** do Tech Challenge da FIAP e consiste em uma **API RESTful desenvolvida em
+.NET 8** para gerenciar o **cadastro de usu√°rios** e sua **biblioteca de jogos adquiridos**.
+Essa API √© o ponto de partida para uma plataforma robusta de games voltada √† educa√ß√£o em tecnologia.
 
 ---
 
-## ??? Tecnologias Utilizadas
+## Objetivo
+
+Criar um MVP funcional, utilizando arquitetura limpa, boas pr√°ticas de desenvolvimento, persist√™ncia de dados com Entity Framework Core 
+e autentica√ß√£o com JWT, que sirva como base s√≥lida para as pr√≥ximas fases do projeto.
+
+---
+
+## Tecnologias Utilizadas
 
 - .NET 8 (ASP.NET Core MVC)
 - Entity Framework Core + Migrations
 - Docker (para PostgreSQL)
 - JWT Authentication & Authorization
-- xUnit + Moq para testes unit·rios
+- xUnit + Moq para testes unit√°rios
 - Testes automatizados
 - Swagger (Swashbuckle)
 - Domain-Driven Design (DDD)
-- Middlewares personalizados (log e tratamento de exceÁıes)
+- Middlewares personalizados (log e tratamento de exce√ß√µes)
 
 ---
 
-## ?? Funcionalidades
+##  Funcionalidades
 
-### ? Cadastro e Gerenciamento de Usu·rios
+### Cadastro e Gerenciamento de Usu√°rios
 - Cadastro com nome, e-mail e senha segura
-- ValidaÁ„o de e-mail e senha forte
-- AtualizaÁ„o e exclus„o de usu·rios
+- Valida√ß√£o de e-mail e senha forte
+- Atualiza√ß√£o e exclus√£o de usu√°rios
 - Filtro por nome ou e-mail
 
-### ?? AutenticaÁ„o e Permissıes
-- Login com geraÁ„o de token JWT
+###  Autentica√ß√£o e Permiss√µes
+- Login com gera√ß√£o de token JWT
 - Controle de acesso por roles (`Admin`, `User`)
-- Permissıes separadas em entidade `UserAuthorization` (relacionamento 1:1)
+- Permiss√µes separadas em entidade `UserAuthorization` (relacionamento 1:1)
 
-### ?? Biblioteca de Jogos
-- AssociaÁ„o de jogos a usu·rios
-- Listagem de jogos adquiridos por usu·rio
-- Exclus„o de jogos da biblioteca
-
----
-
-## ?? Arquitetura
-?? UserRegistrationAndGameLibrary
-??? ?? Api # Controllers, Middlewares, Program.cs
-??? ?? Application # DTOs, Interfaces de ServiÁo
-??? ?? Domain # Entidades, Enums, Value Objects
-??? ?? Infra # DbContext, Migrations, RepositÛrios
-
-- Arquitetura em camadas com separaÁ„o clara de responsabilidades
-- Uso de DDD e boas pr·ticas REST
-- InjeÁ„o de dependÍncia configurada com `AddScoped`
+### Biblioteca de Jogos
+- Associa√ß√£o de jogos a usu√°rios
+- Listagem de jogos adquiridos por usu√°rio
+- Exclus√£o de jogos da biblioteca
 
 ---
 
-### ? Passos
+##  Arquitetura
+- UserRegistrationAndGameLibrary
+  - Api # Controllers, Middlewares, Program.cs
+  - Application # DTOs, Interfaces de Servi√ßo
+  - Domain # Entidades, Enums, Value Objects
+  - Infra # DbContext, Migrations, Reposit√≥rios
 
-1. Clone o repositÛrio:
+- Arquitetura em camadas com separa√ß√£o clara de responsabilidades
+- Uso de DDD e boas pr√°ticas REST
+- Inje√ß√£o de depend√™ncia configurada com `AddScoped`
+
+---
+
+###  Passos
+
+1. Clone o reposit√≥rio:
 ```bash
 git clone https://github.com/leticiacarolinesilva/UserRegistrationAndGameLibrary.git
-
-2. Caso n„o tenha o postgreSQL instalado vocÍ pode iniciar um container PostgreSQL localmente com o seguinte comando:
+```
+2. Caso n√£o tenha o postgreSQL instalado voc√™ pode iniciar um container PostgreSQL localmente com o seguinte comando:
 
 ```bash
 docker run --name meu-postgres \
@@ -75,7 +75,7 @@ docker run --name meu-postgres \
   -e POSTGRES_PASSWORD=gamepassword \
   -e POSTGRES_DB=gameplatform \
   -d postgres
-
+```
   3. Execute o projeto
 
   4. Acesse o Swagger: https://localhost:7213/swagger
