@@ -1,4 +1,3 @@
-using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
@@ -29,8 +28,8 @@ public class GameLibraryService : IGameLibraryService
         if (await _gameLibraryRepository.UserOwnsGameAsync(userId, gameId))
             throw new DomainException("User already owns this game");
 
-        var gameLibrary = new GameLibrary (user.Id, game.Id, game.Price);
-        
+        var gameLibrary = new GameLibrary(user.Id, game.Id, game.Price);
+
         return await _gameLibraryRepository.AddAsync(gameLibrary);
     }
 

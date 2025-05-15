@@ -119,7 +119,10 @@ public class Game
             throw new DomainException("Cover image URL cannot be empty.");
 
         //URL format validation 
-        var urlRegex = new Regex(@"^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$");
+        var urlRegex = new Regex(
+            @"^((https?|ftp):\/\/[^\s]+|([a-zA-Z]:\\|\.\/|\/)?[^:*?<>|\""\r\n]+(\.[a-zA-Z]{2,4}))$",
+            RegexOptions.IgnoreCase);
+
         if (!urlRegex.IsMatch(url))
             throw new DomainException("Invalid cover image URL format.");
 

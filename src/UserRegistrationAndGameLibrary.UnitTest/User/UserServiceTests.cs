@@ -119,7 +119,7 @@ public class UserServiceTests
             new Email("test@example.com"),
             new Password("ValidPass1!"));
 
-        var game = new Game(
+        var game = new Domain.Entities.Game(
             "Test Game",
             "Description",
             29.99m,
@@ -133,10 +133,10 @@ public class UserServiceTests
         _gameRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(game);
 
-        GameLibrary createdLibrary = null;
-        _gameLibraryRepositoryMock.Setup(x => x.AddAsync(It.IsAny<GameLibrary>()))
-            .Callback<GameLibrary>(gl => createdLibrary = gl)
-            .ReturnsAsync((GameLibrary gl) => gl);
+        Domain.Entities.GameLibrary createdLibrary = null;
+        _gameLibraryRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Domain.Entities.GameLibrary>()))
+            .Callback<Domain.Entities.GameLibrary>(gl => createdLibrary = gl)
+            .ReturnsAsync((Domain.Entities.GameLibrary gl) => gl);
 
         var result = await _userService.AddGameToLibraryAsync(Guid.NewGuid(), Guid.NewGuid());
 
@@ -145,7 +145,7 @@ public class UserServiceTests
         Assert.Equal(createdLibrary.UserId, result.UserId);
         Assert.Equal(createdLibrary.GameId, result.GameId);
 
-        _gameLibraryRepositoryMock.Verify(x => x.AddAsync(It.IsAny<GameLibrary>()), Times.Once);
+        _gameLibraryRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Domain.Entities.GameLibrary>()), Times.Once);
     }
 
     [Fact]
@@ -173,7 +173,7 @@ public class UserServiceTests
             .ReturnsAsync(user);
 
         _gameRepositoryMock.Setup(x => x.GetByIdAsync(gameId))
-            .ReturnsAsync((Game)null);
+            .ReturnsAsync((Domain.Entities.Game)null);
 
         await Assert.ThrowsAsync<DomainException>(() =>
             _userService.AddGameToLibraryAsync(userId, gameId));
@@ -187,14 +187,14 @@ public class UserServiceTests
             new Email("test@example.com"),
             new Password("ValidPass1!"));
 
-        var game = new Game("Test Game",
+        var game = new Domain.Entities.Game("Test Game",
             "Description",
             29.99m,
             DateTime.UtcNow,
             GameGenre.RPG,
             "https://example.com/test.jpg");
 
-        var existingEntry = new GameLibrary(user.Id, game.Id, game.Price);
+        var existingEntry = new Domain.Entities.GameLibrary(user.Id, game.Id, game.Price);
 
         _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(user);
@@ -203,7 +203,7 @@ public class UserServiceTests
             .ReturnsAsync(game);
 
         _gameLibraryRepositoryMock.Setup(x => x.GetByUserIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new List<GameLibrary> { existingEntry });
+            .ReturnsAsync(new List<Domain.Entities.GameLibrary> { existingEntry });
 
         var exception = await Assert.ThrowsAsync<DomainException>(() =>
             _userService.AddGameToLibraryAsync(Guid.NewGuid(), game.Id));
