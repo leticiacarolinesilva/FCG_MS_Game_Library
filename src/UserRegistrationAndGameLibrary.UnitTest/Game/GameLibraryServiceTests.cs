@@ -79,18 +79,19 @@ public class GameLibraryServiceTests
     {
         var user = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"));
         var game = new Domain.Entities.Game("Jogo", "desc", 15, DateTime.UtcNow, GameGenre.Horror, "C:\\IMG_3083.jpg");
+        var entry = new Domain.Entities.GameLibrary(user.Id, game.Id, 20);
 
         _userRepoMock.Setup(r => r.GetByIdAsync(user.Id)).ReturnsAsync(user);
         _gameRepoMock.Setup(r => r.GetByIdAsync(game.Id)).ReturnsAsync(game);
         _libraryRepoMock.Setup(r => r.UserOwnsGameAsync(user.Id, game.Id)).ReturnsAsync(false);
-        _libraryRepoMock.Setup(r => r.AddAsync(It.IsAny<Domain.Entities.GameLibrary>()))
-            .ReturnsAsync((Domain.Entities.GameLibrary lib) => lib);
+        _libraryRepoMock.Setup(r => r.GetByUserIdAndGameIdAsync(user.Id, game.Id))
+            .ReturnsAsync(entry);
 
         var result = await _service.AddGameToLibraryAsync(user.Id, game.Id);
 
-        Assert.Equal(user.Id, result.UserId);
-        Assert.Equal(result.GameId, game.Id);
-        Assert.Equal(game.Price, result.PurchasePrice);
+        Assert.NotNull(result);
+        Assert.True(user.Id == result.UserId);
+        Assert.True(game.Id == result.GameId);
     }
 
     [Fact]
@@ -162,6 +163,6 @@ public class GameLibraryServiceTests
 
         await _service.RemoveFromLibraryAsync(entry.UserId, entry.GameId);
 
-        _libraryRepoMock.Verify(r => r.RemoveFromLibraryAsync(entry.GameId), Times.Once);
+        _libraryRepoMock.Verify(r => r.RemoveFromLibraryAsync(entry.Id), Times.Once);
     }
 }

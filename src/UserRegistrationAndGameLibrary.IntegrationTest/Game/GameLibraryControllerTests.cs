@@ -85,7 +85,7 @@ public class GameLibraryControllerTests : BaseIntegrationTests
         var (userId, gameId) = await SetupUserAndGameAsync();
         await HttpClient.PostAsync($"{BaseUrl}/users/{userId}/library?gameId={gameId}", null);
 
-        var response = await HttpClient.DeleteAsync($"{BaseUrl}/users/{userId}/library/{gameId}");
+        var response = await HttpClient.DeleteAsync($"{BaseUrl}/users/{userId}/library/{Guid.NewGuid()}?gameId={gameId}");
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 

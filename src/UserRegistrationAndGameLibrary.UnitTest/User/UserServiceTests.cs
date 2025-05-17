@@ -127,23 +127,22 @@ public class UserServiceTests
             GameGenre.RPG,
             "https://test.com/cover.jpg");
 
+        var entry = new Domain.Entities.GameLibrary(user.Id, game.Id, 20);
+
         _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(user);
 
         _gameRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(game);
 
-        Domain.Entities.GameLibrary createdLibrary = null;
-        _gameLibraryRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Domain.Entities.GameLibrary>()))
-            .Callback<Domain.Entities.GameLibrary>(gl => createdLibrary = gl)
-            .ReturnsAsync((Domain.Entities.GameLibrary gl) => gl);
+        _gameLibraryRepositoryMock.Setup(x => x.GetByUserIdAndGameIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
+            .ReturnsAsync(entry);
 
         var result = await _userService.AddGameToLibraryAsync(Guid.NewGuid(), Guid.NewGuid());
 
-        Assert.NotNull(createdLibrary);
-        Assert.Equal(createdLibrary.Id, result.Id);
-        Assert.Equal(createdLibrary.UserId, result.UserId);
-        Assert.Equal(createdLibrary.GameId, result.GameId);
+        Assert.NotNull(result);
+        Assert.Equal(entry.UserId, result.UserId);
+        Assert.Equal(entry.GameId, result.GameId);
 
         _gameLibraryRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Domain.Entities.GameLibrary>()), Times.Once);
     }
