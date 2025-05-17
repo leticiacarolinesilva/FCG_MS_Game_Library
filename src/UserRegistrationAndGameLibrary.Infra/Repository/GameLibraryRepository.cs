@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 
-using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
 
@@ -48,13 +47,12 @@ public class GameLibraryRepository : IGameLibraryRepository
             .AnyAsync(gl => gl.UserId == userId && gl.GameId == gameId);
     }
 
-    public async Task<GameLibrary> AddAsync(GameLibrary gameLibrary)
+    public async Task AddAsync(GameLibrary gameLibrary)
     {
         try
         {
             await _context.GameLibraries.AddAsync(gameLibrary);
             await _context.SaveChangesAsync();
-            return gameLibrary;
         }
         catch (Exception e)
         {

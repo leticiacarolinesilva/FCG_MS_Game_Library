@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using UserRegistrationAndGameLibrary.Api.Filters;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
-using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 
@@ -163,7 +162,7 @@ public class GameLibraryController: ControllerBase
     {
         try
         {
-            await _gameLibraryService.RemoveFromLibraryAsync( userId, gameId);
+            await _gameLibraryService.RemoveFromLibraryAsync(userId, gameId);
             return NoContent();
         }
         catch (Exception ex)

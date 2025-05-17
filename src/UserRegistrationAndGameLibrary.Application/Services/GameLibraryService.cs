@@ -1,4 +1,3 @@
-using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
@@ -20,18 +19,27 @@ public class GameLibraryService : IGameLibraryService
     }
     public async Task<GameLibrary> AddGameToLibraryAsync(Guid userId, Guid gameId)
     {
-        var user = await _userRepository.GetByIdAsync(userId) 
+        var user = await _userRepository.GetByIdAsync(userId)
                    ?? throw new DomainException("User not found");
-            
-        var game = await _gameRepository.GetByIdAsync(gameId) 
+
+        var game = await _gameRepository.GetByIdAsync(gameId)
                    ?? throw new DomainException("Game not found");
 
         if (await _gameLibraryRepository.UserOwnsGameAsync(userId, gameId))
             throw new DomainException("User already owns this game");
 
-        var gameLibrary = new GameLibrary (user.Id, game.Id, game.Price);
-        
-        return await _gameLibraryRepository.AddAsync(gameLibrary);
+        var gameLibrary = new GameLibrary(user.Id, game.Id, game.Price);
+
+        await _gameLibraryRepository.AddAsync(gameLibrary);
+
+        var gameLibraryNew = await _gameLibraryRepository.GetByUserIdAndGameIdAsync(user.Id, gameId);
+
+        if (gameLibraryNew is null)
+        {
+            throw new DomainException("An error occurred when linking game to user ");
+        }
+
+        return gameLibraryNew;
     }
 
     public async Task<IEnumerable<GameLibrary>> GetUserLibraryAsync(Guid userId)
@@ -52,7 +60,7 @@ public class GameLibraryService : IGameLibraryService
         entry.MarkAsInstalled();
         await _gameLibraryRepository.UpdateAsync(entry);
     }
- 
+
     public async Task MarkAsUninstalledAsync(Guid userId, Guid gameId)
     {
         var entry = await GetLibraryEntryAsync(userId, gameId);
@@ -65,7 +73,7 @@ public class GameLibraryService : IGameLibraryService
     {
         var entry = await GetLibraryEntryAsync(userId, gameId);
         if (entry == null) throw new DomainException("Library entry not found");
-        await _gameLibraryRepository.RemoveFromLibraryAsync(gameId);
+        await _gameLibraryRepository.RemoveFromLibraryAsync(entry.Id);
     }
-    
+
 }
