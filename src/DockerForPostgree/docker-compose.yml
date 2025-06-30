@@ -1,7 +1,9 @@
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: gameplatform_postgres
+    container_name: postgres
+    networks:
+      - compose-bridge
     environment:
       POSTGRES_USER: gameuser
       POSTGRES_PASSWORD: gamepassword
@@ -16,6 +18,18 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  api:
+    build:
+      context: ..
+      dockerfile: UserRegistrationAndGameLibrary.Api/Dockerfile
+    container_name: api
+    networks:
+      - compose-bridge
+    ports:
+      - 8080:8080
+networks:
+  compose-bridge:
+    driver: bridge 
 
 volumes:
   postgres_data:
