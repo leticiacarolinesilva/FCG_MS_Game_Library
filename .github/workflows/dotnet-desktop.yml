@@ -1,4 +1,4 @@
-name: CI - .NET API
+name: CI - UserRegistrationAndGameLibrary
 
 on:
   push:
@@ -14,16 +14,16 @@ jobs:
     - name: Checkout do código
       uses: actions/checkout@v4
 
-    - name: Setup .NET
+    - name: Setup do .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: '8.0.x' # Se estiver usando outra versão, troca aqui
 
-    - name: Restaurar dependências
-      run: dotnet restore
+    - name: Restaurar pacotes
+      run: dotnet restore UserRegistrationAndGameLibrary.sln
 
-    - name: Buildar o projeto
-      run: dotnet build --no-restore --configuration Release
+    - name: Buildar solução
+      run: dotnet build UserRegistrationAndGameLibrary.sln --no-restore --configuration Release
 
-    - name: Rodar os testes
-      run: dotnet test --no-build --configuration Release --logger "trx"
+    - name: Rodar testes
+      run: dotnet test UserRegistrationAndGameLibrary.sln --no-build --configuration Release --logger "trx"
