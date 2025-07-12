@@ -2,9 +2,9 @@ name: CI - UserRegistrationAndGameLibrary
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ master ]
 
 jobs:
   build-and-test:
@@ -17,7 +17,7 @@ jobs:
     - name: Setup do .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x' # Se estiver usando outra versão, troca aqui
+        dotnet-version: '8.0.x'
 
     - name: Restaurar pacotes
       run: dotnet restore UserRegistrationAndGameLibrary.sln
