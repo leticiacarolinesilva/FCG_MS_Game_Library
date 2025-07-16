@@ -26,7 +26,7 @@ jobs:
 
     - name: Build da imagem Docker
       run: |
-        docker build -t ${{secrets.ECR_REPOSITORY }} .
+        docker build -t game-library .
 
     - name: Tag para o ECR
       run: |
