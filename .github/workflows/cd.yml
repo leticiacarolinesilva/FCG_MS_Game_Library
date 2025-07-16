@@ -30,8 +30,8 @@ jobs:
 
     - name: Tag para o ECR
       run: |
-        docker tag game-library:latest ${{ secrets.ECR_REPOSITORY }}:latest
-        
+        # docker tag game-library:latest ${{ secrets.ECR_REPOSITORY }}:latest
+        docker tag game-library:latest 773016904081.dkr.ecr.us-east-1.amazonaws.com/game-library:latest
     - name: Push no ECR
       run: |
         docker push ${{ secrets.ECR_REPOSITORY }}:latest
