@@ -26,7 +26,7 @@ jobs:
 
     - name: Build da imagem Docker
       run: |
-        docker build -t ${{ secrets.ECR_REPOSITORY }}:latest ./src/WebApi
+        docker build -t ${{secrets.ECR_REPOSITORY }}:latest .
 
     - name: Tag para o ECR
       run: |
