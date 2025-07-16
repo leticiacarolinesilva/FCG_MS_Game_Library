@@ -8,3 +8,17 @@ dotnet ef migrations add InitialCreate \
 dotnet ef database update \
     --project src/UserRegistrationAndGameLibrary.Infra \
     --startup-project src/UserRegistrationAndGameLibrary.Api
+    
+dotnet ef migrations add MoveToGamePlatformSchema \
+    --project src/UserRegistrationAndGameLibrary.Infra \
+    --startup-project src/UserRegistrationAndGameLibrary.Api \
+    --output-dir Persistence/Migrations
+
+
+
+docker-compose up -d
+
+docker-compose down
+
+Rebuild and restart your API container
+docker-compose up -d --build

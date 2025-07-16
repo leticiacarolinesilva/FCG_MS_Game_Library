@@ -12,14 +12,15 @@ using UserRegistrationAndGameLibrary.Infra;
 namespace UserRegistrationAndGameLibrary.Infra.Persistence.Migrations
 {
     [DbContext(typeof(UserRegistrationDbContext))]
-    [Migration("20250501212321_AddUserAuthorizationAndRemovePermission")]
-    partial class AddUserAuthorizationAndRemovePermission
+    [Migration("20250615115625_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("game_platform")
                 .HasAnnotation("ProductVersion", "8.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -73,7 +74,7 @@ namespace UserRegistrationAndGameLibrary.Infra.Persistence.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("games", (string)null);
+                    b.ToTable("games", "game_platform");
                 });
 
             modelBuilder.Entity("UserRegistrationAndGameLibrary.Domain.Entities.GameLibrary", b =>
@@ -118,7 +119,7 @@ namespace UserRegistrationAndGameLibrary.Infra.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ux_game_libraries_user_game");
 
-                    b.ToTable("gamelibraries", null, t =>
+                    b.ToTable("gamelibraries", "game_platform", t =>
                         {
                             t.HasCheckConstraint("ck_game_libraries_positive_price", "purchase_price >= 0");
                         });
@@ -145,7 +146,7 @@ namespace UserRegistrationAndGameLibrary.Infra.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users", "game_platform");
                 });
 
             modelBuilder.Entity("UserRegistrationAndGameLibrary.Domain.Entities.UserAuthorization", b =>
@@ -168,7 +169,7 @@ namespace UserRegistrationAndGameLibrary.Infra.Persistence.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("userAuthorizations", (string)null);
+                    b.ToTable("userAuthorizations", "game_platform");
                 });
 
             modelBuilder.Entity("UserRegistrationAndGameLibrary.Domain.Entities.GameLibrary", b =>
@@ -205,7 +206,7 @@ namespace UserRegistrationAndGameLibrary.Infra.Persistence.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("users");
+                            b1.ToTable("users", "game_platform");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -223,7 +224,7 @@ namespace UserRegistrationAndGameLibrary.Infra.Persistence.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("users");
+                            b1.ToTable("users", "game_platform");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

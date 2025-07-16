@@ -25,6 +25,9 @@ public class UserRegistrationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Set default schema for all entities
+        modelBuilder.HasDefaultSchema("game_platform");
+        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserRegistrationDbContext).Assembly);
         
         modelBuilder.HasPostgresExtension("uuid-ossp");
