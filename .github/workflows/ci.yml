@@ -1,13 +1,12 @@
 name: CI - UserRegistrationAndGameLibrary
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
 jobs:
   build-and-test:
+    name: Build e Testes Automatizados
     runs-on: ubuntu-latest
 
     steps:
