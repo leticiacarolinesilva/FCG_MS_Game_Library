@@ -1,29 +1,18 @@
 # FIAP Cloud Games - API de Cadastro e Biblioteca de Jogos
 
-Este projeto é a entrega da **Fase 1** do Tech Challenge da FIAP e consiste em uma **API RESTful desenvolvida em
-.NET 8** para gerenciar o **cadastro de usuários** e sua **biblioteca de jogos adquiridos**.
-Essa API é o ponto de partida para uma plataforma robusta de games voltada à educação em tecnologia.
+Desenvolvido por **Letícia Caroline** e **Daniel** como parte da fase 2 do curso de Arquitetura .NET na FIAP. Neste projeto, evoluímos uma aplicação monolítica para um ambiente real de produção na AWS com Docker, CI/CD e monitoramento.
 
 ---
 
-## Objetivo
+# 📌 Principais Tecnologias
 
-Criar um MVP funcional, utilizando arquitetura limpa, boas práticas de desenvolvimento, persistência de dados com Entity Framework Core 
-e autenticação com JWT, que sirva como base sólida para as próximas fases do projeto.
-
----
-
-## Tecnologias Utilizadas
-
-- .NET 8 (ASP.NET Core MVC)
-- Entity Framework Core + Migrations
-- Docker (para PostgreSQL)
-- JWT Authentication & Authorization
-- xUnit + Moq para testes unitários
-- Testes automatizados
-- Swagger (Swashbuckle)
-- Domain-Driven Design (DDD)
-- Middlewares personalizados (log e tratamento de exceções)
+- **.NET 8** – API e camadas de domínio, aplicação e infraestrutura  
+- **Docker (multi-stage)** – Build, teste e imagem final com aspnet:8.0  
+- **GitHub Actions (CI/CD)** – Build/testes automáticos e publicação no ECR  
+- **AWS EC2** – Deploy manual da imagem Docker  
+- **AWS ECR** – Registro de imagens da aplicação  
+- **Amazon RDS (PostgreSQL)** – Banco persistente em nuvem  
+- **New Relic** – Monitoramento de performance e logs em produção
 
 ---
 
@@ -60,24 +49,40 @@ e autenticação com JWT, que sirva como base sólida para as próximas fases do
 
 ---
 
+##  CI/CD com GitHub Actions
+
+- **CI (Pull Request)**: build da solução e execução dos testes unitários (dotnet test)
+- **CD (Merge para master)**: construção da imagem Docker e envio automático ao ECR com a tag latest
+
+Dessa forma, garantimos entregas consistentes e automatizadas com validação prévia.
+
+---
+
+##  Monitoramento com New Relic
+
+O agent do New Relic foi instalado na instância EC2
+
+Coleta de métricas de CPU, memórias, latência e throughput
+
+Logs da aplicação são enviados com estrutura JSON para o New Relic Logs
+
+Dashboards customizados monitoram erros, status codes e desempenho em tempo real
+
+---
+
 ###  Passos
 
 1. Clone o repositório:
 ```bash
 git clone https://github.com/leticiacarolinesilva/UserRegistrationAndGameLibrary.git
 ```
-2. Caso não tenha o postgreSQL instalado você pode iniciar um container PostgreSQL localmente com o seguinte comando:
 
+2. Entre na pasta e rode Docker Compose (para testes locais com PostgreSQL):
 ```bash
-docker run --name meu-postgres \
-  -p 5432:5432 \
-  -e POSTGRES_USER=gameuser \
-  -e POSTGRES_PASSWORD=gamepassword \
-  -e POSTGRES_DB=gameplatform \
-  -d postgres
+docker-compose up --build
 ```
-  3. Execute o projeto
 
-  4. Acesse o Swagger: https://localhost:7213/swagger
+4. Acesse Swagger: http://localhost:3001/swagger/index.html
+
 
 
