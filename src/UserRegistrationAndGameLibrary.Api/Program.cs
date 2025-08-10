@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 using UserRegistrationAndGameLibrary.Api.Extensions;
 using UserRegistrationAndGameLibrary.Infra;
@@ -46,7 +45,7 @@ builder.Services.AddSwaggerGen(c =>
 
     c.IncludeXmlComments(xmlPath);
     c.EnableAnnotations();
-    
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme",
