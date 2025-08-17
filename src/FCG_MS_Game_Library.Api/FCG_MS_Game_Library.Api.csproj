@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UserRegistrationAndGameLibrary.Application\UserRegistrationAndGameLibrary.Application.csproj" />
-    <ProjectReference Include="..\UserRegistrationAndGameLibrary.Infra\UserRegistrationAndGameLibrary.Infra.csproj" />
+    <ProjectReference Include="..\FCG_MS_Game_Library.Application\FCG_MS_Game_Library.Application.csproj" />
+    <ProjectReference Include="..\FCG_MS_Game_Library.Infra\FCG_MS_Game_Library.Infra.csproj" />
   </ItemGroup>
 
 </Project>

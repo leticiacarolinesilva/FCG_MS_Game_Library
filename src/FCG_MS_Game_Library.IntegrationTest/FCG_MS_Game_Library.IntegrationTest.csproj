@@ -24,11 +24,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\UserRegistrationAndGameLibrary.Api\UserRegistrationAndGameLibrary.Api.csproj" />
+      <Folder Include="Auth\" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Auth\" />
+      <ProjectReference Include="..\FCG_MS_Game_Library.Api\FCG_MS_Game_Library.Api.csproj" />
     </ItemGroup>
 
 </Project>
