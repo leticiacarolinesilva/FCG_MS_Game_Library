@@ -1,7 +1,8 @@
-using System.IdentityModel.Tokens.Jwt;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,6 @@ using Testcontainers.PostgreSql;
 using UserRegistrationAndGameLibrary.Infra;
 
 using Xunit;
-using System.Net.Http.Headers;
 
 namespace UserRegistrationAndGameLibrary.IntegrationTest;
 
@@ -47,12 +47,12 @@ public class BaseIntegrationTests : IAsyncLifetime
             .WithWebHostBuilder(builder =>
             {
                 builder.UseSolutionRelativeContentRoot(
-                    Path.Combine("src", "UserRegistrationAndGameLibrary.Api"));
+                    Path.Combine("src", "FCG_MS_Game_Library.Api"));
 
                 builder.ConfigureServices(services =>
                 {
                     services.RemoveAll<DbContextOptions<UserRegistrationDbContext>>();
-                    services.AddDbContext<UserRegistrationDbContext>(options => 
+                    services.AddDbContext<UserRegistrationDbContext>(options =>
                         options.UseNpgsql(DbContainer.GetConnectionString()));
                 });
             });
