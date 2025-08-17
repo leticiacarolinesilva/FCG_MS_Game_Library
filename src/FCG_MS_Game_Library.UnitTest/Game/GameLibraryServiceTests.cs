@@ -1,6 +1,10 @@
+using FCG_MS_Game_Library.Infra.ExternalClient.Interfaces;
+using FCG_MS_Game_Library.Infra.ExternalClient.Responses;
+
 using Moq;
 
 using UserRegistrationAndGameLibrary.Application.Services;
+using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
 
@@ -10,84 +14,92 @@ public class GameLibraryServiceTests
 {
     private readonly Mock<IGameLibraryRepository> _libraryRepoMock;
     private readonly Mock<IGameRepository> _gameRepoMock;
+    private readonly Mock<IUserClient> _userClientMock;
+
     private readonly GameLibraryService _service;
 
     public GameLibraryServiceTests()
     {
         _libraryRepoMock = new Mock<IGameLibraryRepository>();
         _gameRepoMock = new Mock<IGameRepository>();
+        _userClientMock = new Mock<IUserClient>();
+
 
         _service = new GameLibraryService(
             _libraryRepoMock.Object,
+            _userClientMock.Object,
             _gameRepoMock.Object);
     }
 
-    //[Fact]
-    //public async Task AddGameToLibraryAsync_ShouldThrow_WhenUserNotFound()
-    //{
-    //    var userId = Guid.NewGuid();
-    //    _userRepoMock.Setup(r => r.GetByIdAsync(userId))
-    //        .ReturnsAsync((Domain.Entities.User)null!);
+    [Fact]
+    public async Task AddGameToLibraryAsync_ShouldThrow_WhenUserNotFound()
+    {
+        var userId = Guid.NewGuid();
+        _userClientMock.Setup(r => r.GetByIdAsync(userId))
+            .ReturnsAsync((UserResponse)null!);
 
-    //    var ex = await Assert.ThrowsAsync<DomainException>(() =>
-    //        _service.AddGameToLibraryAsync(userId, Guid.NewGuid()));
+        var ex = await Assert.ThrowsAsync<DomainException>(() =>
+            _service.AddGameToLibraryAsync(userId, Guid.NewGuid()));
 
-    //    Assert.Equal("User not found", ex.Message);
-    //}
+        Assert.Equal("User not found", ex.Message);
+    }
 
-    //[Fact]
-    //public async Task AddGameToLibraryAsync_ShouldThrow_WhenGameNotFound()
-    //{
-    //    var userId = Guid.NewGuid();
-    //    var gameId = Guid.NewGuid();
-    //    var user = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"));
+    [Fact]
+    public async Task AddGameToLibraryAsync_ShouldThrow_WhenGameNotFound()
+    {
+        var userId = Guid.NewGuid();
+        var gameId = Guid.NewGuid();
+        var user = new UserResponse(userId, "Test", "test@example.com", "Admin");
 
-    //    _userRepoMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
-    //    _gameRepoMock.Setup(r => r.GetByIdAsync(gameId)).ReturnsAsync((Domain.Entities.Game)null!);
+        _userClientMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
+        _gameRepoMock.Setup(r => r.GetByIdAsync(gameId)).ReturnsAsync((Domain.Entities.Game)null!);
 
-    //    var ex = await Assert.ThrowsAsync<DomainException>(() =>
-    //        _service.AddGameToLibraryAsync(userId, gameId));
+        var ex = await Assert.ThrowsAsync<DomainException>(() =>
+            _service.AddGameToLibraryAsync(userId, gameId));
 
-    //    Assert.Equal("Game not found", ex.Message);
-    //}
+        Assert.Equal("Game not found", ex.Message);
+    }
 
-    //[Fact]
-    //public async Task AddGameToLibraryAsync_ShouldThrow_WhenGameAlreadyOwned()
-    //{
-    //    var userId = Guid.NewGuid();
-    //    var gameId = Guid.NewGuid();
-    //    var user = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"));
-    //    var game = new Domain.Entities.Game("Jogo", "desc", 15, DateTime.UtcNow, GameGenre.Horror, "C:\\IMG_3083.jpg");
+    [Fact]
+    public async Task AddGameToLibraryAsync_ShouldThrow_WhenGameAlreadyOwned()
+    {
+        var userId = Guid.NewGuid();
+        var gameId = Guid.NewGuid();
 
-    //    _userRepoMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
-    //    _gameRepoMock.Setup(r => r.GetByIdAsync(gameId)).ReturnsAsync(game);
-    //    _libraryRepoMock.Setup(r => r.UserOwnsGameAsync(userId, gameId)).ReturnsAsync(true);
+        var user = new UserResponse(userId, "Test", "test@example.com", "Admin");
+        var game = new Domain.Entities.Game("Jogo", "desc", 15, DateTime.UtcNow, GameGenre.Horror, "C:\\IMG_3083.jpg");
 
-    //    var ex = await Assert.ThrowsAsync<DomainException>(() =>
-    //        _service.AddGameToLibraryAsync(userId, gameId));
+        _userClientMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
+        _gameRepoMock.Setup(r => r.GetByIdAsync(gameId)).ReturnsAsync(game);
+        _libraryRepoMock.Setup(r => r.UserOwnsGameAsync(userId, gameId)).ReturnsAsync(true);
 
-    //    Assert.Equal("User already owns this game", ex.Message);
-    //}
+        var ex = await Assert.ThrowsAsync<DomainException>(() =>
+            _service.AddGameToLibraryAsync(userId, gameId));
 
-    //[Fact]
-    //public async Task AddGameToLibraryAsync_ShouldAdd_WhenValid()
-    //{
-    //    var user = new Domain.Entities.User("Test", new Email("test@example.com"), new Password("ValidPass1!"));
-    //    var game = new Domain.Entities.Game("Jogo", "desc", 15, DateTime.UtcNow, GameGenre.Horror, "C:\\IMG_3083.jpg");
-    //    var entry = new Domain.Entities.GameLibrary(user.Id, game.Id, 20);
+        Assert.Equal("User already owns this game", ex.Message);
+    }
 
-    //    _userRepoMock.Setup(r => r.GetByIdAsync(user.Id)).ReturnsAsync(user);
-    //    _gameRepoMock.Setup(r => r.GetByIdAsync(game.Id)).ReturnsAsync(game);
-    //    _libraryRepoMock.Setup(r => r.UserOwnsGameAsync(user.Id, game.Id)).ReturnsAsync(false);
-    //    _libraryRepoMock.Setup(r => r.GetByUserIdAndGameIdAsync(user.Id, game.Id))
-    //        .ReturnsAsync(entry);
+    [Fact]
+    public async Task AddGameToLibraryAsync_ShouldAdd_WhenValid()
+    {
+        var userId = Guid.NewGuid();
+        var user = new UserResponse(userId, "Test", "test@example.com", "Admin");
 
-    //    var result = await _service.AddGameToLibraryAsync(user.Id, game.Id);
+        var game = new Domain.Entities.Game("Jogo", "desc", 15, DateTime.UtcNow, GameGenre.Horror, "C:\\IMG_3083.jpg");
+        var entry = new Domain.Entities.GameLibrary(user.Id, game.Id, 20);
 
-    //    Assert.NotNull(result);
-    //    Assert.True(user.Id == result.UserId);
-    //    Assert.True(game.Id == result.GameId);
-    //}
+        _userClientMock.Setup(r => r.GetByIdAsync(user.Id)).ReturnsAsync(user);
+        _gameRepoMock.Setup(r => r.GetByIdAsync(game.Id)).ReturnsAsync(game);
+        _libraryRepoMock.Setup(r => r.UserOwnsGameAsync(user.Id, game.Id)).ReturnsAsync(false);
+        _libraryRepoMock.Setup(r => r.GetByUserIdAndGameIdAsync(user.Id, game.Id))
+            .ReturnsAsync(entry);
+
+        var result = await _service.AddGameToLibraryAsync(user.Id, game.Id);
+
+        Assert.NotNull(result);
+        Assert.True(user.Id == result.UserId);
+        Assert.True(game.Id == result.GameId);
+    }
 
     [Fact]
     public async Task MarkAsInstalledAsync_ShouldThrow_WhenEntryNotFound()

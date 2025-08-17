@@ -1,6 +1,14 @@
 namespace FCG_MS_Game_Library.Infra.ExternalClient.Responses;
 public class UserResponse
 {
+    public UserResponse(Guid id, string name, string email, string permission)
+    {
+        Id = id;
+        Name = name;
+        Email = email;
+        Permission = permission;
+    }
+
     /// <summary>
     /// User Id
     /// </summary>
