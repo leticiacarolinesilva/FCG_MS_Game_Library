@@ -18,7 +18,6 @@ public class GameLibraryRepository : IGameLibraryRepository
     {
         return await _context.GameLibraries
             .Include(gl => gl.Game)
-            .Include(gl => gl.User)
             .FirstOrDefaultAsync(gl => gl.UserId == userId && gl.GameId == gameId);
     }
 

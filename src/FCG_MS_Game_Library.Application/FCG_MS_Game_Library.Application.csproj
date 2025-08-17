@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FCG_MS_Game_Library.Domain\FCG_MS_Game_Library.Domain.csproj" />
+      <ProjectReference Include="..\FCG_MS_Game_Library.Infra\FCG_MS_Game_Library.Infra.csproj" />
     </ItemGroup>
 
 </Project>

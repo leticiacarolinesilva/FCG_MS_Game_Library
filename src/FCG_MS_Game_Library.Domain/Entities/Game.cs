@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+
 using UserRegistrationAndGameLibrary.Domain.Enums;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
 
@@ -37,11 +38,11 @@ public class Game
     /// URL for the game's cover image
     /// </summary>
     public string CoverImageUrl { get; private set; }
-    
+
     /// <summary>
     /// Used for EF Core
     /// </summary>
-    private Game(){}
+    private Game() { }
 
     /// <summary>
     /// Constructor used to set new Game
@@ -53,7 +54,7 @@ public class Game
     /// <param name="genre">Genre of the game</param>
     /// <param name="coverImageUrl">URL for the game's cover image</param>
     public Game(
-        string title, string description, decimal price, DateTime releasedDate, 
+        string title, string description, decimal price, DateTime releasedDate,
         GameGenre genre, string coverImageUrl
     )
     {
@@ -65,7 +66,7 @@ public class Game
         Genre = genre;
         SetCoverImageUrl(coverImageUrl);
     }
-    
+
     /// <summary>
     /// Sets the game title (validates for non-empty and max length)
     /// </summary>
@@ -75,10 +76,10 @@ public class Game
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new DomainException("User name cannot be empty");
-            
+
         if (title.Length > 100)
             throw new DomainException("User name is too long");
-            
+
         Title = title.Trim();
     }
     /// <summary>
@@ -88,7 +89,7 @@ public class Game
     /// <exception cref="DomainException">Thrown if price is invalid</exception>
     public void SetPrice(decimal price)
     {
-        if (price < 0 )
+        if (price < 0)
             throw new DomainException("Price cannot be negative");
 
         Price = price;
@@ -102,10 +103,10 @@ public class Game
     {
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("User name cannot be empty");
-            
+
         if (description.Length > 500)
             throw new DomainException("User name is too long");
-            
+
         Description = description.Trim();
     }
     /// <summary>

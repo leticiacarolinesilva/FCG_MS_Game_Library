@@ -1,6 +1,5 @@
-namespace UserRegistrationAndGameLibrary.Application.Dtos;
-
-public class ResponseUserDto
+namespace FCG_MS_Game_Library.Infra.ExternalClient.Responses;
+public class UserResponse
 {
     /// <summary>
     /// User Id

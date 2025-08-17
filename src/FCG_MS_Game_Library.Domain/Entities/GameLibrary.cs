@@ -10,7 +10,6 @@ public class GameLibrary
     /// User who owns the game
     /// </summary>
     public Guid UserId { get; private set; }
-    public User User { get; private set; }
     /// <summary>
     /// Game that is owned
     /// </summary>
@@ -31,15 +30,15 @@ public class GameLibrary
     /// <summary>
     /// Used for EF Core
     /// </summary>
-    private GameLibrary(){}
-    
+    private GameLibrary() { }
+
     /// <summary>
     /// Constructor used to set new GameLibrary
     /// </summary>
     /// <param name="user">User who owns the game</param>
     /// <param name="game">Game that is owned</param>
     /// <param name="purchasePrice">Price at which the game was purchased</param>
-    public GameLibrary(Guid userId, Guid gameId,decimal purchasePrice)
+    public GameLibrary(Guid userId, Guid gameId, decimal purchasePrice)
     {
         Id = Guid.NewGuid();
         UserId = userId;
@@ -48,7 +47,7 @@ public class GameLibrary
         PurchasePrice = purchasePrice;
         IsInstalled = false;
     }
-    
+
     public void MarkAsInstalled() => IsInstalled = true;
     public void MarkAsUninstalled() => IsInstalled = false;
     public void SetInstalledStatus(bool isInstalled) => IsInstalled = isInstalled;

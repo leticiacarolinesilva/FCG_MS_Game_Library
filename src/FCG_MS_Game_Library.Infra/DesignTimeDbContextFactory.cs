@@ -16,7 +16,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<UserRegist
         var optionsBuilder = new DbContextOptionsBuilder<UserRegistrationDbContext>();
         optionsBuilder.UseNpgsql(
             configuration.GetConnectionString("DefaultConnection"),
-            o => o.MigrationsAssembly("UserRegistrationAndGameLibrary.Infra"));
+            o => o.MigrationsAssembly("FCG_MS_Game_Library.Infra"));
 
         return new UserRegistrationDbContext(optionsBuilder.Options);
     }

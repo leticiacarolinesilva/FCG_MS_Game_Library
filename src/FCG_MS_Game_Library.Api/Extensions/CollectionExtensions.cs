@@ -1,3 +1,6 @@
+using FCG_MS_Game_Library.Infra.ExternalClient;
+using FCG_MS_Game_Library.Infra.ExternalClient.Interfaces;
+
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Application.Services;
 using UserRegistrationAndGameLibrary.Domain.Interfaces;
@@ -9,16 +12,22 @@ namespace UserRegistrationAndGameLibrary.Api.Extensions
     {
         public static IServiceCollection UseCollectionExtensions(this IServiceCollection services)
         {
-            services.AddScoped<IUserAuthorizationRepository, UserAuthorizationRepository>();
             services.AddScoped<IGameLibraryRepository, GameLibraryRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
-            
-            services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
+
             services.AddScoped<IGameLibraryService, GameLibraryService>();
             services.AddScoped<IGameService, GameService>();
-            services.AddScoped<IUserService, UserService>();
-            
+
+            services.AddHttpClient<IUserClient, UserClient>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:500/api/user/");
+            });
+
+            //services.AddScoped<IUserClient, UserClient>();
+
+            services.AddScoped<IPaymentClient, PaymentClient>();
+
+
             return services;
         }
     }

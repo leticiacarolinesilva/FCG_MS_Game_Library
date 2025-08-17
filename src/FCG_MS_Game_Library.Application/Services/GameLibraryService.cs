@@ -1,3 +1,5 @@
+using FCG_MS_Game_Library.Infra.ExternalClient.Interfaces;
+
 using UserRegistrationAndGameLibrary.Application.Interfaces;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Exceptions;
@@ -8,18 +10,20 @@ namespace UserRegistrationAndGameLibrary.Application.Services;
 public class GameLibraryService : IGameLibraryService
 {
     private readonly IGameLibraryRepository _gameLibraryRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly IUserClient _userClient;
     private readonly IGameRepository _gameRepository;
 
-    public GameLibraryService(IGameLibraryRepository gameLibraryRepository, IUserRepository userRepository, IGameRepository gameRepository)
+    public GameLibraryService(IGameLibraryRepository gameLibraryRepository,
+        IUserClient userClient,
+        IGameRepository gameRepository)
     {
         _gameLibraryRepository = gameLibraryRepository;
-        _userRepository = userRepository;
+        _userClient = userClient;
         _gameRepository = gameRepository;
     }
     public async Task<GameLibrary> AddGameToLibraryAsync(Guid userId, Guid gameId)
     {
-        var user = await _userRepository.GetByIdAsync(userId)
+        var user = await _userClient.GetByIdAsync(userId)
                    ?? throw new DomainException("User not found");
 
         var game = await _gameRepository.GetByIdAsync(gameId)

@@ -19,12 +19,6 @@ public class GameLibraryConfiguration : IEntityTypeConfiguration<GameLibrary>
             .HasDefaultValueSql("uuid_generate_v4()");
 
         // Relationships
-        builder.HasOne(gl => gl.User)
-            .WithMany(u => u.GameLibrary)
-            .HasForeignKey(gl => gl.UserId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired();
-
         builder.HasOne(gl => gl.Game)
             .WithMany()
             .HasForeignKey(gl => gl.GameId)
@@ -32,6 +26,11 @@ public class GameLibraryConfiguration : IEntityTypeConfiguration<GameLibrary>
             .IsRequired();
 
         // Properties
+        builder.Property(g => g.UserId)
+            .HasColumnName("userId")
+            .HasColumnType("uuid")
+            .IsRequired();
+
         builder.Property(gl => gl.PurchaseDate)
             .HasColumnName("purchase_date")
             .HasColumnType("timestamp with time zone")
