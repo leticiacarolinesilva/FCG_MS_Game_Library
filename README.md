@@ -1,88 +1,82 @@
-# FIAP Cloud Games - API de Cadastro e Biblioteca de Jogos
+# FCG_MS_User
+Microserviço responsável por gerenciar jogos e a biblioteca de jogos dos usuários, incluindo operações de cadastro, consulta e integração com o microserviço de usuários para validação e propagação de informações.
 
-Desenvolvido por **Letícia Caroline** e **Daniel** como parte da fase 2 do curso de Arquitetura .NET na FIAP. Neste projeto, evoluímos uma aplicação monolítica para um ambiente real de produção na AWS com Docker, CI/CD e monitoramento.
+## Principais Tecnologias
+- .NET 8 – API estruturada em camadas de domínio, aplicação e infraestrutura
 
----
+- Docker (multi-stage) – Build otimizado e imagem final baseada em aspnet:8.0
 
-# 📌 Principais Tecnologias
+- GitHub Actions (CI/CD) – Build, testes e publicação automatizada no Amazon ECR
 
-- **.NET 8** – API e camadas de domínio, aplicação e infraestrutura  
-- **Docker (multi-stage)** – Build, teste e imagem final com aspnet:8.0  
-- **GitHub Actions (CI/CD)** – Build/testes automáticos e publicação no ECR  
-- **AWS EC2** – Deploy manual da imagem Docker  
-- **AWS ECR** – Registro de imagens da aplicação  
-- **Amazon RDS (PostgreSQL)** – Banco persistente em nuvem  
-- **New Relic** – Monitoramento de performance e logs em produção
+- AWS EC2 – Hospedagem da aplicação em container Docker
 
----
+- AWS ECR – Registro das imagens do serviço de usuários
 
-##  Funcionalidades
+- Amazon RDS (PostgreSQL) – Banco de dados persistente em nuvem
 
-### Cadastro e Gerenciamento de Usuários
-- Cadastro com nome, e-mail e senha segura
-- Validação de e-mail e senha forte
-- Atualização e exclusão de usuários
-- Filtro por nome ou e-mail
+- New Relic – Observabilidade, logs e monitoramento de performance
 
-###  Autenticação e Permissões
-- Login com geração de token JWT
-- Controle de acesso por roles (`Admin`, `User`)
-- Permissões separadas em entidade `UserAuthorization` (relacionamento 1:1)
+## Funcionalidades
+- Cadastro e Gerenciamento de de jogos e a biblioteca de jogos dos usuários
 
-### Biblioteca de Jogos
-- Associação de jogos a usuários
-- Listagem de jogos adquiridos por usuário
-- Exclusão de jogos da biblioteca
+## Autenticação e Permissões
 
----
+- Login com JWT (JSON Web Token)
 
-##  Arquitetura
-- UserRegistrationAndGameLibrary
-  - Api # Controllers, Middlewares, Program.cs
-  - Application # DTOs, Interfaces de Serviço
-  - Domain # Entidades, Enums, Value Objects
-  - Infra # DbContext, Migrations, Repositórios
+- Controle de acesso por roles (Admin, User)
 
-- Arquitetura em camadas com separação clara de responsabilidades
-- Uso de DDD e boas práticas REST
-- Injeção de dependência configurada com `AddScoped`
+## Arquitetura
 
----
+ - FCG_MS_User
 
-##  CI/CD com GitHub Actions
+    - Api – Controllers, Middlewares, Program.cs
 
-- **CI (Pull Request)**: build da solução e execução dos testes unitários (dotnet test)
-- **CD (Merge para master)**: construção da imagem Docker e envio automático ao ECR com a tag latest
+    - Application – DTOs, Serviços e Interfaces
 
-Dessa forma, garantimos entregas consistentes e automatizadas com validação prévia.
+    - Domain – Entidades, Enums e Regras de Negócio
 
----
+    - Infra – DbContext, Repositórios, Configurações de Persistência
 
-##  Monitoramento com New Relic
+✔️ Arquitetura em camadas seguindo boas práticas de DDD e REST
 
-O agent do New Relic foi instalado na instância EC2
+✔️ Injeção de dependência configurada via AddScoped
 
-Coleta de métricas de CPU, memórias, latência e throughput
+✔️ Estrutura pensada para evolução em microsserviços
 
-Logs da aplicação são enviados com estrutura JSON para o New Relic Logs
+## 🚀 CI/CD com GitHub Actions
 
-Dashboards customizados monitoram erros, status codes e desempenho em tempo real
+- CI (Pull Request):
 
----
+    - Build da solução
 
-###  Passos
+    - Execução dos testes unitários (dotnet test)
 
+- CD (Merge para master):
+
+    - Construção da imagem Docker
+  
+    - Publicação automática no Amazon ECR com tag latest
+
+✅ Garantindo entregas consistentes, seguras e automatizadas.
+
+## 📊 Monitoramento com New Relic
+- Agent do New Relic instalado no container em execução na EC2
+
+- Coleta de métricas: CPU, memória, throughput e latência
+
+- Logs estruturados em JSON enviados ao New Relic Logs
+
+- Dashboards monitorando erros, status codes e performance em tempo real
+
+## ▶️ Como Rodar
 1. Clone o repositório:
-```bash
-git clone https://github.com/leticiacarolinesilva/UserRegistrationAndGameLibrary.git
-```
-
-2. Entre na pasta e rode Docker Compose (para testes locais com PostgreSQL):
-```bash
+ ```bash
+https://github.com/leticiacarolinesilva/FCG_MS_Game_Library.git
+ ```
+2. Suba o ambiente local com Docker Compose (PostgreSQL incluso):
+ ```bash
 docker-compose up --build
 ```
-
-4. Acesse Swagger: http://localhost:3001/swagger/index.html
-
-
+3. Acesse o Swagger da API:
+http://localhost:{port}/swagger/index.html
 
