@@ -1,4 +1,4 @@
-# FCG_MS_User
+# FCG_MS_Game_Library
 Microserviço responsável por gerenciar jogos e a biblioteca de jogos dos usuários, incluindo operações de cadastro, consulta e integração com o microserviço de usuários para validação e propagação de informações.
 
 ## Principais Tecnologias
