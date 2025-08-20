@@ -67,6 +67,11 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddHealthChecks()
+    .AddNpgSql(
+        builder.Configuration.GetConnectionString("DefaultConnection")!,
+        name: "PostgreSQL");
+
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
