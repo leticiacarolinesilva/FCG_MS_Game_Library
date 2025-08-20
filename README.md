@@ -27,7 +27,7 @@ Microserviço responsável por gerenciar jogos e a biblioteca de jogos dos usuá
 
 ## Arquitetura
 
- - FCG_MS_User
+ - FCG_MS_Game_Library
 
     - Api – Controllers, Middlewares, Program.cs
 
