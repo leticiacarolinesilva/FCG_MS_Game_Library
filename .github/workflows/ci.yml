@@ -25,4 +25,4 @@ jobs:
       run: dotnet build FCG_MS_Game_Library.sln --no-restore --configuration Release
 
     - name: Rodar testes
-      run: dotnet test FCG_MS_Game_Library.sln --no-build --configuration Release --logger "trx"
+      run: dotnet test FCG_MS_Game_Library.sln --configuration Release --logger "trx"
