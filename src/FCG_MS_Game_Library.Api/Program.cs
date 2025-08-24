@@ -1,7 +1,10 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using FCG_MS_Game_Library.Infra;
+
+using FCG_MS_Users.Api.Extensions;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+
+using Nest;
 
 using UserRegistrationAndGameLibrary.Api.Extensions;
 using UserRegistrationAndGameLibrary.Infra;
@@ -16,61 +19,39 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<UserRegistrationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+var jwtKey = builder.Configuration.GetValue<string>("Jwt:Key");
+
+var userUri = builder.Configuration["UserClient:Uri"];
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.UseCollectionExtensions();
-
-builder.Services.AddAuthentication(options =>
+if (string.IsNullOrEmpty(userUri))
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(builder.Configuration["Jwt:Key"]))
-    };
-});
+    throw new ArgumentException("User Client URI is not configured.", nameof(userUri));
+}
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tech Challenge F1", Version = "v1" });
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+builder.Services.UseCollectionExtensions(userUri);
 
-    c.IncludeXmlComments(xmlPath);
-    c.EnableAnnotations();
+builder.Services.UseAuthenticationExtensions(jwtKey);
 
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT"
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            new string[] { }
-        }
-    });
-});
+builder.Services.UseSwaggerExtensions();
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(
         builder.Configuration.GetConnectionString("DefaultConnection")!,
         name: "PostgreSQL");
+
+var elasticUri = builder.Configuration["Elastic:Uri"];
+var elasticUser = builder.Configuration["Elastic:Username"];
+var elasticPass = builder.Configuration["Elastic:Password"];
+
+if (string.IsNullOrEmpty(elasticUri))
+{
+    throw new ArgumentException("Elasticsearch URI is not configured.", nameof(elasticUri));
+}
+
+builder.Services.AddSingleton<IElasticClient>(sp =>
+    ElasticSearchClientFactory.CreateClient(elasticUri, elasticUser, elasticPass));
 
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();

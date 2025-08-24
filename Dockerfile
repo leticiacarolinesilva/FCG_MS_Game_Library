@@ -3,31 +3,31 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore dependencies
-COPY ["src/UserRegistrationAndGameLibrary.Api/UserRegistrationAndGameLibrary.Api.csproj", "src/UserRegistrationAndGameLibrary.Api/"]
-COPY ["src/UserRegistrationAndGameLibrary.Application/UserRegistrationAndGameLibrary.Application.csproj", "src/UserRegistrationAndGameLibrary.Application/"]
-COPY ["src/UserRegistrationAndGameLibrary.Domain/UserRegistrationAndGameLibrary.Domain.csproj", "src/UserRegistrationAndGameLibrary.Domain/"]
-COPY ["src/UserRegistrationAndGameLibrary.Infra/UserRegistrationAndGameLibrary.Infra.csproj", "src/UserRegistrationAndGameLibrary.Infra/"]
-COPY ["src/UserRegistrationAndGameLibrary.UnitTest/UserRegistrationAndGameLibrary.UnitTest.csproj", "src/UserRegistrationAndGameLibrary.UnitTest/"]
+COPY ["src/FCG_MS_Game_Library.Api/FCG_MS_Game_Library.Api.csproj", "src/FCG_MS_Game_Library.Api/"]
+COPY ["src/FCG_MS_Game_Library.Application/FCG_MS_Game_Library.Application.csproj", "src/FCG_MS_Game_Library.Application/"]
+COPY ["src/FCG_MS_Game_Library.Domain/FCG_MS_Game_Library.Domain.csproj", "src/FCG_MS_Game_Library.Domain/"]
+COPY ["src/FCG_MS_Game_Library.Infra/FCG_MS_Game_Library.Infra.csproj", "src/FCG_MS_Game_Library.Infra/"]
+COPY ["src/FCG_MS_Game_Library.UnitTest/FCG_MS_Game_Library.UnitTest.csproj", "src/FCG_MS_Game_Library.UnitTest/"]
 
 # Restore packages
-RUN dotnet restore "src/UserRegistrationAndGameLibrary.Api/UserRegistrationAndGameLibrary.Api.csproj"
-RUN dotnet restore "src/UserRegistrationAndGameLibrary.UnitTest/UserRegistrationAndGameLibrary.UnitTest.csproj"
+RUN dotnet restore "src/FCG_MS_Game_Library.Api/FCG_MS_Game_Library.Api.csproj"
+RUN dotnet restore "src/FCG_MS_Game_Library.UnitTest/FCG_MS_Game_Library.UnitTest.csproj"
 
 # Copy the rest of the code
 COPY . .
 
 # Build the projects
-RUN dotnet build "src/UserRegistrationAndGameLibrary.Api/UserRegistrationAndGameLibrary.Api.csproj" -c Release
-RUN dotnet build "src/UserRegistrationAndGameLibrary.UnitTest/UserRegistrationAndGameLibrary.UnitTest.csproj" -c Release
+RUN dotnet build "src/FCG_MS_Game_Library.Api/FCG_MS_Game_Library.Api.csproj" -c Release
+RUN dotnet build "src/FCG_MS_Game_Library.UnitTest/FCG_MS_Game_Library.UnitTest.csproj" -c Release
 
 # Test stage
 FROM build AS test
 WORKDIR /src
-RUN dotnet test "src/UserRegistrationAndGameLibrary.UnitTest/UserRegistrationAndGameLibrary.UnitTest.csproj" -c Release --no-build
+RUN dotnet test "src/FCG_MS_Game_Library.UnitTest/FCG_MS_Game_Library.UnitTest.csproj" -c Release --no-build
 # Build and publish
 FROM build AS publish
-RUN dotnet build "src/UserRegistrationAndGameLibrary.Api/UserRegistrationAndGameLibrary.Api.csproj" -c Release -o /app/build
-RUN dotnet publish "src/UserRegistrationAndGameLibrary.Api/UserRegistrationAndGameLibrary.Api.csproj" -c Release -o /app/publish
+RUN dotnet build "src/FCG_MS_Game_Library.Api/FCG_MS_Game_Library.Api.csproj" -c Release -o /app/build
+RUN dotnet publish "src/FCG_MS_Game_Library.Api/FCG_MS_Game_Library.Api.csproj" -c Release -o /app/publish
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
@@ -66,4 +66,4 @@ USER appuser
 EXPOSE 80
 
 # Set the entry point
-ENTRYPOINT ["dotnet", "UserRegistrationAndGameLibrary.Api.dll"]
+ENTRYPOINT ["dotnet", "FCG_MS_Game_Library.Api.dll"]
