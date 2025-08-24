@@ -24,5 +24,5 @@ jobs:
     - name: Buildar solução
       run: dotnet build FCG_MS_Game_Library.sln --no-restore --configuration Release
 
-    - name: Rodar testes
-      run: dotnet test FCG_MS_Game_Library.sln --configuration Release --logger "trx"
+    - name: Rodar testes unitários
+      run: dotnet test src/FCG_MS_Game_Library.UnitTest/FCG_MS_Game_Library.UnitTest.csproj
