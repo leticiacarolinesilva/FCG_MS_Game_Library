@@ -24,7 +24,7 @@ public static class ElasticSearchClientFactory
                     .PropertyName(g => g.Description, "description")
                     .PropertyName(g => g.Price, "price")
                     .PropertyName(g => g.ReleasedDate, "releasedDate")
-                    .PropertyName(g => g.Genre.ToString(), "genre")
+                    .PropertyName(g => g.Genre, "genre")
                     .PropertyName(g => g.CoverImageUrl, "coverImageUrl")
         );
 

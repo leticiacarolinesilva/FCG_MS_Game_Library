@@ -10,7 +10,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5432;Database=gameplatform;Username=gameuser;Password=gamepassword;
-      - Elastic__Uri=http://elasticsearch:9200   # nome consistente para .NET
+      - Elastic__Uri=http://elasticsearch:9200
     ports:
       - "3001:80"
     extra_hosts:

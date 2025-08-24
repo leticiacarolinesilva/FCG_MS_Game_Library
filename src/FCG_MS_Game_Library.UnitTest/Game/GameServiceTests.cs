@@ -1,3 +1,5 @@
+using FCG_MS_Game_Library.Domain.Interfaces;
+
 using Moq;
 
 using UserRegistrationAndGameLibrary.Application.Services;
@@ -10,12 +12,14 @@ namespace UserRegistrationAndGameLibrary.UnitTest.Game;
 public class GameServiceTests
 {
     private readonly Mock<IGameRepository> _gameRepositoryMock;
+    private readonly Mock<IGameSearchRepository> _gameSearchRepository;
     private readonly GameService _gameService;
 
     public GameServiceTests()
     {
         _gameRepositoryMock = new Mock<IGameRepository>();
-        _gameService = new GameService(_gameRepositoryMock.Object);
+        _gameSearchRepository = new Mock<IGameSearchRepository>();
+        _gameService = new GameService(_gameRepositoryMock.Object, _gameSearchRepository.Object);
     }
 
     [Fact]

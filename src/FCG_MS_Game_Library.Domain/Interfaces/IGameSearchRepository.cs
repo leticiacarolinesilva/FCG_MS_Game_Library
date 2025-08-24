@@ -8,4 +8,5 @@ public interface IGameSearchRepository
     Task<IReadOnlyCollection<Game>> SearchByTitleAsync(string title);
     Task<IReadOnlyCollection<Game>> SearchByGenreAsync(string genre);
     Task<object> GetPriceStatisticsAsync();
+    Task DeleteGameAsync(Guid id);
 }

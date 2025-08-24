@@ -61,4 +61,9 @@ public class GameSearchRepository : IGameSearchRepository
 
         return response.Aggregations.Stats("price_stats");
     }
+
+    public async Task DeleteGameAsync(Guid id)
+    {
+        await _elasticClient.DeleteAsync<Game>(id);
+    }
 }

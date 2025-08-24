@@ -43,7 +43,7 @@ public class GameRepository : IGameRepository
     {
         return await _context.Games
             .AsNoTracking()
-            .Where(g => g.Title.Contains(searchTerm) || 
+            .Where(g => g.Title.Contains(searchTerm) ||
                         g.Description.Contains(searchTerm))
             .OrderBy(g => g.Title)
             .ToListAsync();
