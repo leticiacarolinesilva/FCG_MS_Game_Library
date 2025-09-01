@@ -9,7 +9,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=gameplatform;Username=gameuser;Password=gamepassword
       # Conecta ao Elasticsearch usando o IP da outra EC2
-      - Elastic__Uri=http://<IP_PRIVADO_DA_EC2_ELASTICSEARCH>:9200
+      - Elastic__Uri=http://elastic:9200
     ports:
       - "3001:80"
     networks:
