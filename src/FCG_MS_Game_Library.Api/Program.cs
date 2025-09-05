@@ -42,8 +42,7 @@ builder.Services.AddHealthChecks()
         name: "PostgreSQL");
 
 var elasticUri = builder.Configuration["Elastic:Uri"];
-var elasticUser = builder.Configuration["Elastic:Username"];
-var elasticPass = builder.Configuration["Elastic:Password"];
+var xApiKey = builder.Configuration["Elastic:XApiKey"];
 
 if (string.IsNullOrEmpty(elasticUri))
 {
@@ -51,7 +50,7 @@ if (string.IsNullOrEmpty(elasticUri))
 }
 
 builder.Services.AddSingleton<IElasticClient>(sp =>
-    ElasticSearchClientFactory.CreateClient(elasticUri, elasticUser, elasticPass));
+    ElasticSearchClientFactory.CreateClient(elasticUri, xApiKey));
 
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
