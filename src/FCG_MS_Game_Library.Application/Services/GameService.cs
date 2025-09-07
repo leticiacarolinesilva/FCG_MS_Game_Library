@@ -1,3 +1,4 @@
+using FCG_MS_Game_Library.Application.Helpers;
 using FCG_MS_Game_Library.Domain.Interfaces;
 
 using UserRegistrationAndGameLibrary.Application.Interfaces;
@@ -41,7 +42,9 @@ public class GameService : IGameService
         var game = new Game(title, description, price, releaseDate, genre, coverImageUrl);
 
         var createdGame = await _gameRepository.AddAsync(game);
-        await _gameSearchRepository.IndexGameAsync(createdGame);
+
+        if (EnviromentHelper.IsProductionOrDevelopment())
+            await _gameSearchRepository.IndexGameAsync(createdGame);
 
         return createdGame;
     }
@@ -74,7 +77,9 @@ public class GameService : IGameService
         game.SetCoverImageUrl(coverImageUrl);
 
         await _gameRepository.UpdateAsync(game);
-        await _gameSearchRepository.IndexGameAsync(game);
+
+        if (EnviromentHelper.IsProductionOrDevelopment())
+            await _gameSearchRepository.IndexGameAsync(game);
     }
 
     public async Task DeleteGameAsync(Guid id)
@@ -85,7 +90,9 @@ public class GameService : IGameService
             throw new DomainException("Game not found");
 
         await _gameRepository.DeleteAsync(game);
-        await _gameSearchRepository.DeleteGameAsync(id);
+
+        if (EnviromentHelper.IsProductionOrDevelopment())
+            await _gameSearchRepository.DeleteGameAsync(id);
     }
 
     public async Task<IEnumerable<Game>> GetGamesByGenreAsync(GameGenre genre)
