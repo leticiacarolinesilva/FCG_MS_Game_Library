@@ -8,15 +8,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=gameplatform;Username=gameuser;Password=gamepassword
-      - Elastic__Uri=http://elasticsearch:9200
+      - Elastic__Uri=https://my-elasticsearch-project-c3fa12.es.us-east-1.aws.elastic.cloud:443
+      - Elastic__XApiKey=UmlPb0c1a0JWV0J4djZBV2s1Um86SHdxMThqbndNZFFGdGhvVWRzaGRGUQ==
     ports:
       - "3001:80"
     networks:
       - gameplatform_network
     depends_on:
       postgres:
-        condition: service_healthy
-      elasticsearch:
         condition: service_healthy
     restart: unless-stopped
 
