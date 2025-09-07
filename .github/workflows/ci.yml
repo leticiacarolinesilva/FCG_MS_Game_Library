@@ -19,10 +19,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restaurar pacotes
-      run: dotnet restore UserRegistrationAndGameLibrary.sln
+      run: dotnet restore FCG_MS_Game_Library.sln
 
     - name: Buildar solução
-      run: dotnet build UserRegistrationAndGameLibrary.sln --no-restore --configuration Release
+      run: dotnet build FCG_MS_Game_Library.sln --no-restore --configuration Release
 
-    - name: Rodar testes
-      run: dotnet test UserRegistrationAndGameLibrary.sln --no-build --configuration Release --logger "trx"
+    - name: Rodar testes unitários
+      run: dotnet test src/FCG_MS_Game_Library.UnitTest/FCG_MS_Game_Library.UnitTest.csproj
