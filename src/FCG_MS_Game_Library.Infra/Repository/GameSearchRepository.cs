@@ -29,12 +29,14 @@ public class GameSearchRepository : IGameSearchRepository
     public async Task<IReadOnlyCollection<Game>> SearchByTitleAsync(string title)
     {
         var response = await _elasticClient.SearchAsync<Game>(s => s
+            .Index("games")
             .Query(q => q
-                .Match(m => m
+                .MatchPhrasePrefix(m => m
                     .Field(f => f.Title)
                     .Query(title)
                 )
             )
+            .Size(50)
         );
 
         return response.Documents;
@@ -60,6 +62,17 @@ public class GameSearchRepository : IGameSearchRepository
         );
 
         return response.Aggregations.Stats("price_stats");
+    }
+
+    public async Task<IReadOnlyCollection<Game>> GetAllGameAsync()
+    {
+        var response = await _elasticClient.SearchAsync<Game>(s => s
+            .Query(q => q
+                .MatchAll()
+            )
+        );
+
+        return response.Documents;
     }
 
     public async Task DeleteGameAsync(Guid id)

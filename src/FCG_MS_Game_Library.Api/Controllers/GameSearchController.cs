@@ -84,4 +84,16 @@ public class GameSearchController : ControllerBase
         var stats = await _gameSearchRepository.GetPriceStatisticsAsync();
         return Ok(stats);
     }
+
+    /// <summary>
+    /// Get all available games, requires an Admin or User token
+    /// </summary>
+    /// <returns>Return all games</returns>
+    [HttpGet("all")]
+    [ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllGames()
+    {
+        var results = await _gameSearchRepository.GetAllGameAsync();
+        return Ok(results);
+    }
 }
