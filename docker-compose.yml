@@ -8,12 +8,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=gameplatform;Username=gameuser;Password=gamepassword
-      # Conecta ao Elasticsearch usando o IP da outra EC2
-      - Elastic__Uri=http://elastic:9200
+      - Elastic__Uri=https://my-elasticsearch-project-c3fa12.es.us-east-1.aws.elastic.cloud:443
+      - Elastic__XApiKey=U
     ports:
       - "3001:80"
     networks:
-      - app_network
+      - gameplatform_network
     depends_on:
       postgres:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
 
   postgres:
     image: postgres:15-alpine
-    container_name: gameplatform_postgres
+    container_name: gameplatform_postgres_v2
     environment:
       POSTGRES_USER: gameuser
       POSTGRES_PASSWORD: gamepassword
@@ -37,11 +37,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - app_network
+      - gameplatform_network
     restart: unless-stopped
 
 networks:
-  app_network:
+  gameplatform_network:
 
 volumes:
   postgres_data:
