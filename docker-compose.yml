@@ -11,7 +11,7 @@ services:
       - Elastic__Uri=https://my-elasticsearch-project-c3fa12.es.us-east-1.aws.elastic.cloud:443
       - Elastic__XApiKey=U
     ports:
-      - "3001:80"
+      - "5011:80"
     networks:
       - gameplatform_network
     depends_on:
