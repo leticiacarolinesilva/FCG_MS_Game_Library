@@ -1,8 +1,8 @@
 using FCG_MS_Game_Library.Domain.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-using UserRegistrationAndGameLibrary.Api.Filters;
 using UserRegistrationAndGameLibrary.Application.Dtos;
 using UserRegistrationAndGameLibrary.Domain.Entities;
 using UserRegistrationAndGameLibrary.Domain.Enums;
@@ -25,7 +25,7 @@ public class GameSearchController : ControllerBase
     [HttpPost("index")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [UserAuthorizeAtribute(AuthorizationPermissions.Admin)]
+    [Authorize]
     public async Task<IActionResult> IndexGame([FromBody] CreateGameDto gameDto)
     {
         if (!Enum.TryParse<GameGenre>(gameDto.Genre, out var genre))
@@ -52,7 +52,7 @@ public class GameSearchController : ControllerBase
     /// <returns>List of all games by title</returns>
     [HttpGet("search/title")]
     [ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
-    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
+    [Authorize]
     public async Task<IActionResult> SearchByTitle([FromQuery] string title)
     {
         var results = await _gameSearchRepository.SearchByTitleAsync(title);
@@ -65,7 +65,7 @@ public class GameSearchController : ControllerBase
     /// <returns>List of all games by genre</returns>
     [HttpGet("search/genre")]
     [ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
-    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
+    [Authorize]
     public async Task<IActionResult> SearchByGenre([FromQuery] string genre)
     {
         var results = await _gameSearchRepository.SearchByGenreAsync(genre);
@@ -78,7 +78,7 @@ public class GameSearchController : ControllerBase
     /// <returns>Return metrics by price</returns>
     [HttpGet("stats/prices")]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
-    [UserAuthorizeAtribute(AuthorizationPermissions.Admin, AuthorizationPermissions.User)]
+    [Authorize]
     public async Task<IActionResult> GetPriceStats()
     {
         var stats = await _gameSearchRepository.GetPriceStatisticsAsync();
