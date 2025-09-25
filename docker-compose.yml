@@ -7,7 +7,7 @@ services:
     container_name: gameplatform_api
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=gameplatform;Username=gameuser;Password=gamepassword
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=db-fcg-gamelibrary;Username=postgres;Password=gamelibrary123
       - Elastic__Uri=https://my-elasticsearch-project-c3fa12.es.us-east-1.aws.elastic.cloud:443
       - Elastic__XApiKey=U
     ports:
