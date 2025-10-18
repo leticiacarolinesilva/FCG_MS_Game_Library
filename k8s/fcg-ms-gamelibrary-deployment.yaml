@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fcg-ms-gamelibrary
+  labels:
+    app: fcg-ms-gamelibrary
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fcg-ms-gamelibrary
+  template:
+    metadata:
+      labels:
+        app: fcg-ms-gamelibrary
+    spec:
+      containers:
+        - name: fcg-ms-gamelibrary
+          image: 773016904081.dkr.ecr.us-east-1.amazonaws.com/gamelibrary:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+
+            - name: ConnectionStrings__DefaultConnection
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-ms-gamelibrary-secret
+                  key: ConnectionStrings__DefaultConnection
+
+            - name: Elastic__Uri
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-ms-gamelibrary-secret
+                  key: Elastic__Uri
+
+            - name: Elastic__XApiKey
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-ms-gamelibrary-secret
+                  key: Elastic__XApiKey
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fcg-ms-gamelibrary-service
+  labels:
+    app: fcg-ms-gamelibrary
+spec:
+  type: LoadBalancer
+  selector:
+    app: fcg-ms-gamelibrary
+  ports:
+    - port: 80
+      targetPort: 80
