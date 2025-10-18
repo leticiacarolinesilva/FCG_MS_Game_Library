@@ -35,3 +35,25 @@ jobs:
     - name: Push no ECR
       run: |
         docker push ${{ secrets.ECR_REPOSITORY }}:latest
+
+    - name: Configurar o kubectl
+      uses: aws-actions/eks-setup-kubectl@v4
+      with:
+        version: '1.33'
+
+    - name: Obter credenciais do cluster EKS
+      run: |
+        aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
+
+    - name: Create or update Kubernetes secret for Game Library
+      run: |
+        kubectl create secret generic fcg-ms-gamelibrary-secret \
+        --from-literal=ConnectionStrings__DefaultConnection="${{ secrets.GAMELIBRARY_DB_CONNECTION }}" \
+        --from-literal=Elastic__Uri="${{ secrets.ELASTIC_URI }}" \
+        --from-literal=Elastic__XApiKey="${{ secrets.ELASTIC_XAPIKEY }}" \
+        --dry-run=client -o yaml | kubectl apply -f -
+        
+    - name: Aplicar Deployment no EKS
+      run: |
+        kubectl set image deployment/users-deployment users=${{ secrets.ECR_REPOSITORY }}:latest --namespace default
+        kubectl rollout status deployment/users-deployment --namespace default
